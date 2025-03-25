@@ -31,7 +31,30 @@ const getArtefactById = async (req,res) => {
     }
 }
 
-//Update
+//create artefact 
+
+const createArtefact = async(req, res) => {
+    try {
+        const { study, researcher, title, description, fileUrl, createdAt } = req.body; 
+        const newArtefact = new Artefact({
+            study,
+            researcher, 
+            title, 
+            description, 
+            fileUrl,
+            createdAt
+        }); 
+
+        const savedArtefact = await newArtefact.save(); 
+        // if(!savedArtefact){
+        //     return res.status(404).json({message: 'Could not find artefact'})
+        // }
+        res.status(201).json(savedArtefact); 
+
+    }catch(error){
+        res.status(500).json({message: `Error creating the artefact: ${error.message}`})
+    }
+}
 
 //siste jeg hodlte på 
 const updateArtefact = async(req, res)=>{
@@ -53,7 +76,6 @@ const updateArtefact = async(req, res)=>{
     }
 }
 
-
 //Delete 
 
 const deleteArtefact = async(req, res) => {
@@ -71,6 +93,7 @@ const deleteArtefact = async(req, res) => {
 module.exports = {
     getArtefacts,
     getArtefactById,
+    createArtefact,
     updateArtefact,
     deleteArtefact
 
