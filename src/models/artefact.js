@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 
 const ArtefactSchema = new mongoose.Schema({
     project: { type: mongoose.Schema.Types.ObjectId, ref: "ResearchProject", required: true },
@@ -9,4 +10,5 @@ const ArtefactSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("Artefact", ArtefactSchema);
+const Artefact =  mongoose.model("Artefact", ArtefactSchema);
+module.exports = Artefact;
