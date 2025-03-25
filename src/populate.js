@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const dbConnection = require("./dbConnection");
-const Researcher = require("./models/Researcher");
-const Study = require("./models/Study");
-const Artefact = require("./models/Artefact");
+const Researcher = require("./models/researcher");
+const Study = require("./models/study");
+const Artefact = require("./models/artefact");
 
 async function populateDB() {
     try {
