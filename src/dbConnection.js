@@ -11,7 +11,7 @@ const connectionString = process.env.CONNECTION_STRING;
 
 const dbConnection = async () => {
     try {
-      await mongoose.connect(process.env.MONGO_URI, {
+      await mongoose.connect(connectionString, {
         useUnifiedTopology: true,
       });
       console.log('MongoDB connected');
