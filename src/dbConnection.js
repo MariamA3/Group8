@@ -7,7 +7,8 @@ const mongoose = require('mongoose');
 dotenv.config();
 
 //getting env variable in a string
-const connectionString = process.env.CONNECTION_STRING;
+const connectionString = process.env.MONGO_URI;
+
 
 const dbConnection = async () => {
     try {

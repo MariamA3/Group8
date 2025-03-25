@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const FeedbackSchema = new mongoose.Schema({
     artefact: { type: mongoose.Schema.Types.ObjectId, ref: "Artefact", required: true },
     participant: { type: mongoose.Schema.Types.ObjectId, ref: "Participant", required: true },
@@ -6,5 +8,6 @@ const FeedbackSchema = new mongoose.Schema({
     submittedAt: { type: Date, default: Date.now },
   });
   
-  module.exports = mongoose.model("Evaluation", FeedbackSchema);
+  const Feedback = mongoose.model("Feedback", FeedbackSchema);
+  module.exports = Feedback
   

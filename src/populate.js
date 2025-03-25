@@ -22,11 +22,11 @@ async function populateDB() {
         ]);
         
         await Artefact.insertMany([
-            { project: studies[0]._id, researcher: researchers[0]._id, title: "AI-generated Images", description: "Examples of AI-generated art.", fileUrl: "https://example.com/image1.png", fileType: "image", fileSize: 204800 },
-            { project: studies[0]._id, researcher: researchers[0]._id, title: "Decision-making Video", description: "A video on AI-driven choices.", fileUrl: "https://example.com/video1.mp4", fileType: "video", fileSize: 1048576 },
-            { project: studies[1]._id, researcher: researchers[1]._id, title: "Brain Activity Scan", description: "MRI scan of a learning brain.", fileUrl: "https://example.com/image2.png", fileType: "image", fileSize: 307200 },
-            { project: studies[1]._id, researcher: researchers[1]._id, title: "Neural Response Audio", description: "Audio clip of brainwaves.", fileUrl: "https://example.com/audio1.wav", fileType: "audio", fileSize: 512000 },
-            { project: studies[2]._id, researcher: researchers[2]._id, title: "Social Media Impact Chart", description: "A graph on engagement trends.", fileUrl: "https://example.com/image3.png", fileType: "image", fileSize: 256000 }
+            { study: studies[0]._id, researcher: researchers[0]._id, title: "AI-generated Images", description: "Examples of AI-generated art.", fileUrl: "https://example.com/image1.png", fileType: "image", fileSize: 204800 },
+            { study: studies[0]._id, researcher: researchers[0]._id, title: "Decision-making Video", description: "A video on AI-driven choices.", fileUrl: "https://example.com/video1.mp4", fileType: "video", fileSize: 1048576 },
+            { study: studies[1]._id, researcher: researchers[1]._id, title: "Brain Activity Scan", description: "MRI scan of a learning brain.", fileUrl: "https://example.com/image2.png", fileType: "image", fileSize: 307200 },
+            { study: studies[1]._id, researcher: researchers[1]._id, title: "Neural Response Audio", description: "Audio clip of brainwaves.", fileUrl: "https://example.com/audio1.wav", fileType: "audio", fileSize: 512000 },
+            { study: studies[2]._id, researcher: researchers[2]._id, title: "Social Media Impact Chart", description: "A graph on engagement trends.", fileUrl: "https://example.com/image3.png", fileType: "image", fileSize: 256000 }
         ]);
         
         console.log("Database populated successfully");
