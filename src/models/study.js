@@ -6,7 +6,9 @@ const studySchema = new mongoose.Schema({
     description: { type: String },
     //three modes here so we have better control of what is posted
     status: { type: String, enum: ["draft", "active", "completed"], default: "draft" },
+    tartDate: { type: Date },  
+    endDate: { type: Date }, 
     createdAt: { type: Date, default: Date.now },   
 });
-
-module.exports = mongoose.model('Study', studySchema)
+const Study = mongoose.model('Study', studySchema);
+module.exports = Study;
