@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const invitationController = require('../controllers/invitationController'); 
 
-router.get("/invitation", invitationController.getStudies);
-router.get("/invitation/:id", invitationController.getStudyById);
-router.post('/invitation', invitationController.createStudy); 
-router.delete('/invitation/:id', invitationController.deleteStudy);
+
+//sjekke disse
+router.get("/invitation", invitationController.getInvitations);
+router.get("/invitation/:id", invitationController.getInvitationById);
+router.post('/invitation', invitationController.createInvitation); 
+router.delete('/invitation/:id', invitationController.deleteInvitation);
 
 
 
