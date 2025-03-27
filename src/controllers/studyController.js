@@ -1,33 +1,18 @@
 const Study = require('../models/study'); 
+const { getById, getModel, deleteModel } = require('../utils/helpers/controllerHelpers'); 
+
 
 //get studies
-const getStudies = async (req, res) =>{
-  try{
-    const studies = await Study.find(); 
-    if(!studies){
-      return res.status(404).json({message: 'Could not find studies '}); 
-    }
-    res.status(200).json({studies}); 
-  }catch(error){
-    res.status(500).json({message: `Error finding studies: ${error.message}`})
-  }
-}
+
+const getStudies = (req, res) => getModel(Study, req, res, 'Study');
 
 //get study by id 
 
+const getStudyById = (req, res) => getById(Study, req, res, 'Study');
 
-const getsStudyById = async(req, res) =>{ 
-  try {
-    const study = await Study.findById(req.params.id); 
-    if(!study){
-      return res.status(404).json({error: 'Could not find study'}); 
-    }
-    res.status(200).json({study}); 
-  }catch(error){
-    res.status(500).json({message: `Error finding study: ${error.message}`})
-  }
+//delete study 
 
-}
+const deleteStudy = (req, res) => deleteModel(Study, req, res, 'Study');
 
 //create study 
 
@@ -60,24 +45,10 @@ const createStudy = async(req, res) => {
 }
 
 
-//delete study 
-
-const deleteStudy = async (req, res)=>{
-  try {
-    const study = await Study.findByIdAndDelete(req.params.id); 
-    if(!study){
-      return res.status(404).json({message: 'Study not found or already deleted'}); 
-    }
-    res.status(200).json({message: 'Study has been deleted'})
-  }catch(error){
-    res.status(500).json({message: `Error deleting the study: ${error.message}`}); 
-  }
-}
-
   
 module.exports = { 
     getStudies,
-    getsStudyById,
+    getStudyById,
     createStudy,
     deleteStudy
 

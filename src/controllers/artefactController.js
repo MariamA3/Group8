@@ -1,38 +1,16 @@
 
 const Artefact = require('../models/artefact'); 
-
-//Get 
-
-const getArtefacts = async(req, res)=>{
-    try {
-        const artefacts = await Artefact.find(); 
-        if(!artefacts){
-            //why return, 
-            return res.status(404).json({message: 'No artefacts found'}); 
-        }
-        res.status(200).json({artefacts}); 
-    }catch(error){
-        res.status(500).json({message: `Error finding the artefacts: ${error.message}`})
-    }; 
-}
+const { getById, getModel, deleteModel } = require('../utils/helpers/controllerHelpers'); 
 
 
-//Get by Id 
+const getArtefactById = (req, res) => getModelById(Artefact, req, res, 'Artefact');
 
-const getArtefactById = async (req,res) => {
-    try{
-        const artefact = await Artefact.findById(req.params.id); 
-        if(!artefact){
-            return res.status(404).json({message: 'Artefact not found'})
-        }
-        res.status(200).json({artefact})
-    }catch(error){
-        res.status(500).json({message: `Error finding the artefact: ${error.message}`})
-    }
-}
+const getArtefacts = (req, res) => getModel(Artefact, req, res, 'Artefact');
+
+const deleteArtefact = (req, res) => deleteModel(Artefact, req, res, 'Artefact')
+
 
 //create artefact 
-
 const createArtefact = async(req, res) => {
     try {
         const { study, researcher, title, description, fileUrl, createdAt } = req.body; 
@@ -76,19 +54,7 @@ const updateArtefact = async(req, res)=>{
     }
 }
 
-//Delete 
 
-const deleteArtefact = async(req, res) => {
-    try{   
-        const artefact = await Artefact.findByIdAndDelete(req.params.id); 
-        if(!artefact){
-            return res.status(404).json({message: 'Artefact not found, or already delete'})
-        }
-        res.status(200).json({message: 'Artefact deleted'})
-    }catch(error){
-        res.status(500).json({message: `Error deleting the artefact: ${error.message}`})
-    }
-}
 
 module.exports = {
     getArtefacts,
