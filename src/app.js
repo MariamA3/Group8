@@ -22,10 +22,9 @@ app.get("/", (req, res) => {
   });  
 
 
-
 //legg til routes her sp slipper vi mange linjer
 //'authRoutes', 'studyRoutes', <--remove dfor debugging app.js
-const routes = [ 'artefactRoutes' ];
+const routes = [ 'artefactRoutes', 'studyRoutes', 'invitationRoutes' ];
 routes.forEach(route => {
     app.use('/api', require(`./routes/${route}`));
 });
