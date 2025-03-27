@@ -7,19 +7,42 @@ const getResearchers = (req, res) => getModel(Researcher, res, req, 'Researcher'
 //get a researcher
 const getResearcherById = (req, res) => getById(Researcher, res, req, 'Researcher'); 
 
-//does deleting researcher delete studies as well? 
+//sletter denne studies og? 
 const deleteResearcher = (req, res) => deleteModel(Researcher, req, res, 'Researcher')
 
+//updating
+const updateResearcher = async(req, res) => {
+  try {
+    const {    
+        name,
+        email,
+        passwordHash,
+        role
+     } = req.body; 
+
+    const updatedResearcher = await Researcher.findByIdAndUpdate(
+      req.params.id,
+      { name, email,  passwordHash, role }, 
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedResearcher) {
+      return res.status(404).json({ message: 'Researcher not found' }); 
+    }
+    res.status(200).json(updatedResearcher); 
+  } catch (error) {
+    res.status(500).json({ error: `Error updating researcher: ${error.message}` }); 
+  }
+};
 
 //create
 const createAResearcher = async (req, res) => {
-   try{const {name, email, passwordHash, role, createdAt } = req.body; 
+   try{const {name, email, passwordHash, role } = req.body; 
     const newResearcher = new Researcher ({
         name,
         email,
         passwordHash,
-        role,
-        createdAt
+        role
     }); 
     const savedResearcher = await newResearcher.save(); 
 
@@ -32,12 +55,10 @@ const createAResearcher = async (req, res) => {
 
 
 
-
-
-
 module.exports = {
     createAResearcher,
     getResearcherById,
     getResearchers,
-    deleteResearcher
+    deleteResearcher,
+    updateResearcher
 }

@@ -30,10 +30,33 @@ const createInvitation = async(req, res) => {
 
 }
 
+
+
+//update 
+
+const updateInvitation = async(req, res) => {
+
+    try {
+        const {study,  status,  sentAt } = req.body; 
+        const updatedInvitation = Invitation.findByIdAndUpdate(
+            req.params.id, 
+            {study, status, sentAt},
+            {new: true, runValidators: true }); 
+
+      if (!updatedInvitation) {
+      return res.status(404).json({ message: 'Invitation not found' }); 
+    }
+         res.status(200).json(updatedInvitation); 
+    }catch(error){
+        res.status(500).json({message: `Error updating the invitation: ${error.message}`});
+    }
+
+}
 module.exports = {
     getInvitations,
     getInvitationById,
     deleteInvitation,
-    createInvitation
+    createInvitation,
+    updateInvitation
 
 }; 

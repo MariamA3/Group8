@@ -3,7 +3,7 @@ const Artefact = require('../models/artefact');
 const { getById, getModel, deleteModel } = require('../utils/helpers/controllerHelpers'); 
 
 
-const getArtefactById = (req, res) => getModelById(Artefact, req, res, 'Artefact');
+const getArtefactById = (req, res) => getById(Artefact, req, res, 'Artefact');
 
 const getArtefacts = (req, res) => getModel(Artefact, req, res, 'Artefact');
 
