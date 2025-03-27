@@ -1,12 +1,11 @@
-// const express = require('express'); 
-// const router = express.Router(); 
+const express = require('express');
+const router = express.Router();
+const Researcher = require('../controllers/researcherController')
 
-// const researcherController = require('../controllers/researcherController'); 
+router.get('/Researcher', Researcher.getResearchers);
+router.get('/Researcher/:id', Researcher.getResearcherById);
+router.post('/Researcher', Researcher.createAResearcher)
+router.put('/Researcher/:id', Researcher.updateResearcher);
+router.delete('/Researcher/:id', Researcher.deleteResearcher)
 
-
-// router.get('/researcher',researcherController.getResearcherById );
-// router.post('/researcher', researcherController.createAResearcher); 
-
-
-
-// module.exports = router 
+module.exports = router;
