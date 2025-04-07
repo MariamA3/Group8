@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "node server.js",
-    "client": "npm --prefix frontend start",
+    "server": "node src/app.js",
+    "client": "npm --prefix ../frontend run dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
