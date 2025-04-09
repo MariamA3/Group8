@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '../app.css';
+import './components.css';
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

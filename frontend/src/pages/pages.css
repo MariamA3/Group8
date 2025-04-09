@@ -1,0 +1,91 @@
+/* HomePage.css */
+
+.page-container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #777;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .home-page {
+    width: 100%;
+    max-width: 1000px;
+    background-color: white;
+    border-radius: 0;
+    overflow: hidden;
+  }
+  
+  .top-section {
+    padding: 15px 20px;
+    background-color: transparent;
+  }
+  
+  .home-title {
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  /* Main Content Section */
+  .content-container {
+    display: flex;
+    padding: 40px 20px;
+    align-items: center;
+  }
+  
+  .content-left {
+    flex: 1;
+    padding-right: 20px;
+  }
+  
+  .content-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .main-heading {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #222;
+  }
+  
+  .subtitle {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 25px;
+  }
+  
+  .learn-more-btn {
+    background-color: #5f75f7;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .learn-more-btn:hover {
+    background-color: #4a63e8;
+  }
+  
+  .research-illustration {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* For small screens */
+  @media (max-width: 768px) {
+    .content-container {
+      flex-direction: column;
+    }
+    
+    .content-left {
+      padding-right: 0;
+      padding-bottom: 30px;
+    }
+  }
