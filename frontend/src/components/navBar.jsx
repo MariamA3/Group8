@@ -14,9 +14,6 @@ function Navbar() {
   
   return (
     <div className="navbar-container">
-      <p className="navbar-status">
-        {isLoggedIn ? "Navigation - Logged in" : "Navigation - NOT logged in"}
-      </p>
       
       <nav className="navbar">
         {!isLoggedIn ? (
@@ -62,12 +59,6 @@ function Navbar() {
           </>
         )}
       </nav>
-      
-      {/* For demo purposes - remove in production */}
-      <div className="demo-info">
-        <p>This component toggles between logged in and not logged in states.</p>
-        <p>Click "Login" to see the logged-in navbar, and "Log out" to return to the not-logged-in state.</p>
-      </div>
     </div>
   );
 }

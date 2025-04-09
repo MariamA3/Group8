@@ -16,15 +16,15 @@ function HomePage() {
   return (
     <div className="page-container">
       <div className="home-page">
-        <div className="top-section">
-          <div className="home-title">Home page</div>
-        </div>
-        
         <Navbar 
           isLoggedIn={isLoggedIn} 
           onLogin={handleLogin} 
           onLogout={handleLogout} 
         />
+        
+        <div className="top-section">
+          <div className="home-title">Home page</div>
+        </div>
         
         <div className="content-container">
           <div className="content-left">

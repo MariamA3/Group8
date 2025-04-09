@@ -2,8 +2,7 @@
 
 .navbar-container {
     width: 100%;
-    max-width: 1000px;
-    margin: 30px auto 0;
+    margin: 0;
   }
   
   .navbar-status {
@@ -28,12 +27,4 @@
   
   .nav-link:hover {
     color: #e0e0e0;
-  }
-  
-  .demo-info {
-    margin-top: 24px;
-    padding: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #f5f5f5;
   }
