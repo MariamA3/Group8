@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import '../app.css';
 
-export default function Navbar() {
+function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   
   const handleLogin = () => {
@@ -12,20 +13,20 @@ export default function Navbar() {
   };
   
   return (
-    <div className="w-full max-w-4xl mx-auto mt-8">
-      <p className="text-gray-400 mb-2">
+    <div className="navbar-container">
+      <p className="navbar-status">
         {isLoggedIn ? "Navigation - Logged in" : "Navigation - NOT logged in"}
       </p>
       
-      <nav className="bg-blue-500 py-4 px-6 flex justify-end items-center space-x-8">
+      <nav className="navbar">
         {!isLoggedIn ? (
           <>
-            <a href="#about" className="text-white font-medium hover:text-gray-200">
+            <a href="#about" className="nav-link">
               About
             </a>
             <a 
               href="#login" 
-              className="text-white font-medium hover:text-gray-200"
+              className="nav-link"
               onClick={(e) => {
                 e.preventDefault();
                 handleLogin();
@@ -33,24 +34,24 @@ export default function Navbar() {
             >
               Login
             </a>
-            <a href="#register" className="text-white font-medium hover:text-gray-200">
+            <a href="#register" className="nav-link">
               Register
             </a>
           </>
         ) : (
           <>
-            <a href="#dashboard" className="text-white font-medium hover:text-gray-200">
+            <a href="#dashboard" className="nav-link">
               Dashboard
             </a>
-            <a href="#create-study" className="text-white font-medium hover:text-gray-200">
+            <a href="#create-study" className="nav-link">
               Create study
             </a>
-            <a href="#results" className="text-white font-medium hover:text-gray-200">
+            <a href="#results" className="nav-link">
               Results
             </a>
             <a 
               href="#logout" 
-              className="text-white font-medium hover:text-gray-200"
+              className="nav-link"
               onClick={(e) => {
                 e.preventDefault();
                 handleLogout();
@@ -62,11 +63,13 @@ export default function Navbar() {
         )}
       </nav>
       
-      {/* For demo purposes */}
-      <div className="mt-6 p-4 border border-gray-300 rounded bg-gray-100">
+      {/* For demo purposes - remove in production */}
+      <div className="demo-info">
         <p>This component toggles between logged in and not logged in states.</p>
         <p>Click "Login" to see the logged-in navbar, and "Log out" to return to the not-logged-in state.</p>
       </div>
     </div>
   );
 }
+
+export default Navbar;
