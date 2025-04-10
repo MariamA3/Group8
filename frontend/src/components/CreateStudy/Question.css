@@ -1,43 +1,47 @@
 :root {
-    ---background-color: #5e66fa;
-    ---font-color: #000000; 
-    --siteColor: #afb1ce; 
-    
+    --background-color: #f9f9f9;
+    --font-color: #333333;
+    --siteColor: #5e66fa;
+    --border-color: #dcdcdc;
+    --hover-color: #4a5bdc;
 }
 
-.QuestionWrapper{
+.QuestionWrapper {
     display: flex;
     flex-direction: column;
     margin-bottom: 2rem;
+    background-color: var(--background-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
-.QuestionToolBar{
-    background-color: white;
-    align-items: center;
+.QuestionToolBar {
+    background-color: var(--siteColor);
+    color: white;
     display: flex;
+    align-items: center;
     padding: 1rem;
-    color: var(---font-color);
-    border-radius: 1rem 1rem 0  0;
-    border: var(--siteColor) solid 0.1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0; 
 }
-
-.QuestionBar{
-    background-color: white;
-    align-items: center;
+.QuestionBar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    border-radius: 0 0 1rem 1rem;
     padding: 1rem;
-    height: 4rem;
-    border: var(--siteColor) solid 0.1rem;
-   
+    background-color: white;
+    margin: 0; /
 }
-
 
 input[name="question"] {
     border: none;
-    border-bottom: 0.1rem solid var(---font-color);
+    border-bottom: 2px solid var(--border-color);
+    padding: 0.5rem;
+    font-size: 1rem;
     outline: none;
+    transition: border-color 0.3s ease;
 }
 
 input[name="question"]:focus {
@@ -53,22 +57,31 @@ select[name='feedbackType']{
 .fileUploadWrapper {
     display: flex;
     align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
 }
 
 .fileUploadLabel {
     background-color: var(--siteColor);
     color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid transparent;
 }
+
 
 .fileUploadLabel:hover {
-    background-color: #4a5bdc; 
+    background-color: var(--hover-color);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    border: 1px solid var(--hover-color);
 }
 
+
 .fileUploadInput {
-    display: none; 
+    display: none;
 }

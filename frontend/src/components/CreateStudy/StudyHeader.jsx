@@ -13,7 +13,7 @@ export default function StudyHeader({title, setTitle, description, setDescriptio
                 onChange={(event) => setTitle(event.target.value)}
             />
             <input 
-            className="StudyDescription"
+            className="studyDescription"
             placeholder="Description"
             value={description}    
             onChange={(event) => setDescription(event.target.value)}    

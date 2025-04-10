@@ -84,13 +84,14 @@ body {
   }
   
 
-  .Active {
+  .active {
     color: green;
     font-weight: 600;
+
   }
   
-  .Inactive {
-    color: gray;
+  .inactive {
+    color: rgb(255, 0, 0);
     font-weight: 600;
   }
   
