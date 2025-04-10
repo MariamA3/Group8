@@ -1,19 +1,22 @@
 :root {
-    ---BackgroundColor: #FCF7F8;
     /*add font family*/
+    /*---study-color: #b1b4eb;*/
+
 }
 
 body {
-    background-color: rgb(236, 226, 217) ;
+   background-color: lightgoldenrodyellow;
 }
 
 .studyFormWrapper {
-    margin-left: 2rem;
-    margin-right: 2rem;
+    margin-left: 4rem;
+    margin-right: 4rem;
 }
 
 .createStudyTitle {
     font-size: 2.5rem;
+    color: white;
+    font-family: sans-serif;
 }
 
 .studyFormHeader {

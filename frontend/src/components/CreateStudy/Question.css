@@ -1,16 +1,18 @@
 :root {
-    ---back-color: #707070;
+    ---background-color: #5e66fa;
     ---font-color: #000000; 
-    --siteColor: #5E69FF; 
+    --siteColor: #afb1ce; 
+    
 }
 
 .QuestionWrapper{
     display: flex;
     flex-direction: column;
-  
+    margin-bottom: 2rem;
 }
 
 .QuestionToolBar{
+    background-color: white;
     align-items: center;
     display: flex;
     padding: 1rem;
@@ -20,6 +22,7 @@
 }
 
 .QuestionBar{
+    background-color: white;
     align-items: center;
     display: flex;
     justify-content: space-between;
@@ -27,7 +30,7 @@
     padding: 1rem;
     height: 4rem;
     border: var(--siteColor) solid 0.1rem;
-    padding-left: rem;
+   
 }
 
 
@@ -47,3 +50,25 @@ select[name='feedbackType']{
 }
 
 
+.fileUploadWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.fileUploadLabel {
+    background-color: var(--siteColor);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.fileUploadLabel:hover {
+    background-color: #4a5bdc; 
+}
+
+.fileUploadInput {
+    display: none; 
+}

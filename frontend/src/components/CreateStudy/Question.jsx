@@ -14,12 +14,18 @@ export default function Question({ number }) {
           <option value="percent-slider">Feedback type</option>
           <option value="percent-slider">Percent Slider</option>
         </select>
-        <input
-          type="file"
-          name="imageUpload"
-          className="imageUpload"
-          accept="image/*"
-        />
+        <div className="fileUploadWrapper">
+          <label htmlFor="imageUpload" className="fileUploadLabel">
+            Upload Image
+          </label>
+          <input
+            type="file"
+            id="imageUpload"
+            name="imageUpload"
+            className="fileUploadInput"
+            accept="image/*"
+          />
+        </div>
       </div>
     </div>
   );
