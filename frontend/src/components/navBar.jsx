@@ -1,61 +1,48 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import './components.css';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
-  
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  };
+  // Use context instead of local state for authentication
+  const { isLoggedIn, login, logout } = useContext(AuthContext);
   
   return (
     <div className="navbar-container">
-      
       <nav className="navbar">
         {!isLoggedIn ? (
           <>
-            <a href="#about" className="nav-link">
+            <Link to="/about" className="nav-link">
               About
-            </a>
-            <a 
-              href="#login" 
-              className="nav-link"
-              onClick={(e) => {
-                e.preventDefault();
-                handleLogin();
-              }}
-            >
+            </Link>
+            <Link to="/login" className="nav-link">
               Login
-            </a>
-            <a href="#register" className="nav-link">
+            </Link>
+            <Link to="/register" className="nav-link">
               Register
-            </a>
+            </Link>
           </>
         ) : (
           <>
-            <a href="#dashboard" className="nav-link">
+            <Link to="/dashboard" className="nav-link">
               Dashboard
-            </a>
-            <a href="#create-study" className="nav-link">
+            </Link>
+            <Link to="/create-study" className="nav-link">
               Create study
-            </a>
-            <a href="#results" className="nav-link">
+            </Link>
+            <Link to="/results" className="nav-link">
               Results
-            </a>
-            <a 
-              href="#logout" 
+            </Link>
+            <Link 
+              to="/"
               className="nav-link"
               onClick={(e) => {
-                e.preventDefault();
-                handleLogout();
+                // Allow navigation but also handle logout
+                logout();
               }}
             >
               Log out
-            </a>
+            </Link>
           </>
         )}
       </nav>

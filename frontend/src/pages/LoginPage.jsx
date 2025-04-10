@@ -1,31 +1,22 @@
 import { useState } from 'react';
-import './SignInPage.css';
+import './pages.css';
 import Navbar from '../components/navBar.jsx';
 
-function SignInPage() {
+function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add authentication logic here
     console.log('Attempting to sign in with:', email);
   };
 
   return (
     <div className="page-container">
       <div className="signin-page">
-        <Navbar />
         <div className="top-section">
           <div className="page-title">Sign in Page</div>
         </div>
-        
-        <nav className="navbar">
-          <div className="nav-spacer"></div>
-          <a href="#about" className="nav-link">About</a>
-          <a href="#login" className="nav-link">Login</a>
-          <a href="#register" className="nav-link">Register</a>
-        </nav>
         
         <div className="content-container">
           <div className="form-section">
@@ -77,4 +68,4 @@ function SignInPage() {
   );
 }
 
-export default SignInPage;
+export default LoginPage;

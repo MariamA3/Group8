@@ -16,12 +16,6 @@ function HomePage() {
   return (
     <div className="page-container">
       <div className="home-page">
-        <Navbar 
-          isLoggedIn={isLoggedIn} 
-          onLogin={handleLogin} 
-          onLogout={handleLogout} 
-        />
-        
         <div className="top-section">
           <div className="home-title">Home page</div>
         </div>
