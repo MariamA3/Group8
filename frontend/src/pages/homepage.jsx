@@ -31,7 +31,7 @@ function HomePage() {
             <img 
               src="../../public/homepage.svg" 
               alt="People analyzing research data" 
-              className="research-illustration" 
+              className="research-illustration-homepage" 
             />
           </div>
         </div>
