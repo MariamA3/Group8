@@ -1,0 +1,35 @@
+// A mock data file for studies, to test the Results-page and its StudySummaryCard component.
+const mockStudies = [
+  {
+    id: '1',
+    name: 'AI Awareness Survey',
+    questions: ['What is AI?', 'Do you trust AI?'],
+    participants: [
+      { id: 'P1', answers: ['Artificial Intelligence', 'Yes'] },
+      { id: 'P2', answers: ['Machine Learning', 'No'] }
+    ]
+  },
+  {
+    id: '2',
+    name: 'Tech Habits',
+    questions: ['How many hours do you use tech?', 'Favorite device?'],
+    participants: [
+      { id: 'P3', answers: ['5', 'Phone'] },
+      { id: 'P4', answers: ['10', 'Laptop'] }
+    ]
+  },
+  {
+    id: '3',
+    name: 'Differentiating AI-illustrations from Human-illustrations',
+    questions: ['How likely is it that the shown image is AI-generated?',
+      'How likely is it that the shown image is AI-generated?',
+      'How likely is it that the shown image is AI-generated?'],
+    participants: [
+      { id: 'P1', answers: ['80%', '25%', '30%'] },
+      { id: 'P4', answers: ['86%', '30%', '32%'] }
+    ]
+  }
+];
+  
+export default mockStudies;
+  
