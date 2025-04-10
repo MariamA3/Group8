@@ -1,0 +1,236 @@
+/* HomePage.css */
+
+.page-container {
+    width: 100vw;
+    background-color: #777;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .home-page {
+    width: 100%;
+    background-color: white;
+    border-radius: 0;
+    overflow: hidden;
+  }
+  
+  .top-section {
+    padding: 15px 20px;
+    background-color: transparent;
+  }
+  
+  .home-title {
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  /* Main Content Section */
+  .content-container {
+    display: flex;
+    padding: 40px 20px;
+    align-items: center;
+  }
+  
+  .content-left {
+    flex: 1;
+    padding-right: 20px;
+  }
+  
+  .content-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .main-heading {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #222;
+  }
+  
+  .subtitle {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 25px;
+  }
+  
+  .learn-more-btn {
+    background-color: #5f75f7;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .learn-more-btn:hover {
+    background-color: #4a63e8;
+  }
+  
+  .research-illustration {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* SignInPage.css */
+
+  .signin-page {
+    width: 100%;
+    background-color: white;
+    border-radius: 0;
+    overflow: hidden;
+  }
+  
+  .top-section {
+    padding: 15px 20px;
+    background-color: transparent;
+  }
+  
+  .page-title {
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  /* Navigation Bar */
+  .navbar {
+    background-color: #5f75f7;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .nav-spacer {
+    flex-grow: 1;
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 30px;
+  }
+  
+  .nav-link:hover {
+    color: #e0e0e0;
+  }
+  
+  /* Main Content Section */
+  .content-container {
+    display: flex;
+    padding: 40px 20px;
+    min-height: 500px;
+  }
+  
+  .form-section {
+    flex: 1;
+    padding-right: 40px;
+  }
+  
+  .illustration-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .welcome-heading {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #222;
+  }
+  
+  .signin-subheading {
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 30px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+  }
+  
+  .signin-button {
+    background-color: #5f75f7;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .signin-button:hover {
+    background-color: #4a63e8;
+  }
+  
+  .forgot-password {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+  
+  .signin-illustration {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* For small screens */
+  @media (max-width: 768px) {
+    .content-container {
+      flex-direction: column;
+    }
+    
+    .form-section {
+      padding-right: 0;
+      order: 2;
+    }
+    
+    .illustration-section {
+      order: 1;
+      margin-bottom: 30px;
+    }
+  }
+
+  /* For small screens */
+  @media (max-width: 768px) {
+    .content-container {
+      flex-direction: column;
+    }
+    
+    .content-left {
+      padding-right: 0;
+      padding-bottom: 30px;
+    }
+  }
