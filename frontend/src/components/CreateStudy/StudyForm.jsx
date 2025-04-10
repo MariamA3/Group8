@@ -19,8 +19,8 @@ export default function StudyForm(){
            <div className="studyFormHeader">
                 <h1 className="createStudyTitle">New Study</h1>
                 <div className="buttonLine">
-                    <CreateStudyButton />
-                    <CreateStudyPublish />
+                    <CreateStudyButton className="CreateStudyButton"/>
+                    <CreateStudyPublish  className="CreateStudyPublish"/>
                 </div>
             </div>
 

@@ -15,8 +15,9 @@ body {
 
 .createStudyTitle {
     font-size: 2.5rem;
-    color: black;
-    font-family: sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+
 }
 
 .studyFormHeader {
@@ -30,6 +31,26 @@ body {
     display: flex;
     gap: 1rem;
 }
+
+
+.CreateStudyButton {
+    background-color: #62db66;
+    color: black;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.8rem;
+    font-size: 1rem;
+}
+
+.CreateStudyPublish{
+    color: white;
+    background-color: #5E69FF;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.8rem;
+    font-size: 1rem;
+}
+
 
 .QuestionListWrapper {
     margin-top: 4rem;
