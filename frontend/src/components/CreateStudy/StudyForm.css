@@ -1,0 +1,33 @@
+:root {
+    ---BackgroundColor: #FCF7F8;
+    /*add font family*/
+}
+
+body {
+    background-color: rgb(236, 226, 217) ;
+}
+
+.studyFormWrapper {
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+.createStudyTitle {
+    font-size: 2.5rem;
+}
+
+.studyFormHeader {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center; 
+    margin-bottom: 20px; 
+}
+
+.buttonLine {
+    display: flex;
+    gap: 1rem;
+}
+
+.QuestionListWrapper {
+    margin-top: 4rem;
+}

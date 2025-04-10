@@ -1,0 +1,23 @@
+:root {
+    --siteColor: #5E69FF; 
+    ---back-color: #707070;
+}
+
+.studyHeaderWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh; 
+    background-color: var();
+}
+
+.studyTitle {
+    padding: 1rem;
+    border-color: var(--siteColor);
+    border-radius: 10px;
+}
+
+.StudyDescription {
+    padding: 0.8rem;
+    border-radius: 10px;
+    border-color: var(--siteColor);
+}

@@ -1,0 +1,47 @@
+:root {
+    ---back-color: #707070;
+    ---font-color: #000000; 
+    --siteColor: #5E69FF; 
+}
+
+.QuestionWrapper{
+    display: flex;
+    flex-direction: column;
+  
+}
+
+.QuestionToolBar{
+    align-items: center;
+    display: flex;
+    padding: 1rem;
+    color: var(---font-color);
+    border-radius: 1rem 1rem 0  0;
+    border: var(--siteColor) solid 0.1rem;
+}
+
+.QuestionBar{
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 0 0 1rem 1rem;
+    padding: 1rem;
+    height: 4rem;
+    border: var(--siteColor) solid 0.1rem;
+    padding-left: rem;
+}
+
+
+input[name="question"] {
+    border: none;
+    border-bottom: 0.1rem solid var(---font-color);
+    outline: none;
+}
+
+input[name="question"]:focus {
+    border-bottom: 0.1rem solid var(--siteColor);
+    box-shadow: none; 
+}
+
+select[name='feedbackType']{
+    border: none;
+}
