@@ -37,14 +37,10 @@ function LoginPage() {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h1 className="welcome-heading">Welcome</h1>
-        <p className="signin-subheading">Sign in to your account</p>
-        
-        {error && (
-          <div className="error-message">
-            {error}
-          </div>
-        )}
+        <div>
+          <h1 className="welcome-heading">Welcome</h1>
+          <p className="signin-subheading">Sign in to your account</p>
+        </div>
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -86,15 +82,15 @@ function LoginPage() {
             </a>
           </div>
         </form>
-        
-        <div className="example-credentials">
-          <p className="hint-text">
-            <strong>Example credentials:</strong><br />
-            Email: researcher@ntnu.no<br />
-            Password: password123
-          </p>
-        </div>
       </div>
+        
+        <div className="content-right">
+            <img 
+              src="/research-illustration.svg" 
+              alt="People analyzing research data" 
+              className="research-illustration" 
+            />
+        </div>
     </div>
   );
 }
