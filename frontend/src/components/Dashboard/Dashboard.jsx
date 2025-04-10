@@ -1,13 +1,11 @@
 import "./Dashboard.css";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import CreateStudyButton from "../Buttons/CreateStudyButton";
-import dummyStudies from './DummyStudies'
-
-
-
+import dummyStudies from "./DummyStudies";
 
 export default function Dashboard() {
-    const [studies, setStudies] = useState([]);
+  const [studies, setStudies] = useState([]);
 
   // Load dummy studies on mount
   useEffect(() => {
@@ -18,7 +16,9 @@ export default function Dashboard() {
     <div className="DashboardWrapper">
       <div className="DashboardHeader">
         <h1>Dashboard</h1>
-        <CreateStudyButton className='DashboardButton'/>
+        <Link to="/create" className="DashboardButton">
+          Create Study
+        </Link>
       </div>
       <div className="DashboardTable">
         <table>
