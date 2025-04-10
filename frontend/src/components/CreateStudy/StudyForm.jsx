@@ -25,9 +25,9 @@ export default function StudyForm(){
             </div>
 
             <StudyHeader/>
-            
+
             <div className="QuestionListWrapper">
-                    <Question/>
+                    <QuestionList/>
                 </div>
 
        </div>

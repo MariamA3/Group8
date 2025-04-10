@@ -12,7 +12,7 @@ export default function StudyHeader({title, setTitle, description, setDescriptio
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
             />
-            <textarea 
+            <input 
             className="StudyDescription"
             placeholder="Description"
             value={description}    

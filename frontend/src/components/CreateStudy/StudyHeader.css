@@ -17,7 +17,8 @@
 }
 
 .StudyDescription {
-    padding: 0.8rem;
+    padding: 1rem;
     border-radius: 10px;
+    height: 3rem;
     border-color: var(--siteColor);
 }
