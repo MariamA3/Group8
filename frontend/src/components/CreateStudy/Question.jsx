@@ -1,12 +1,8 @@
+
 import "./Question.css";
-import Slider from "@mui/material/Slider";
+//import Slider from "@mui/material/Slider";
 
-//Need question field, feedback type dropdown slider for now, image upload
-
-export default function Question() {
-  /*This needs to be a */
-  const number = 1;
-
+export default function Question({ number }) {
   return (
     <div className="QuestionWrapper">
       <div className="QuestionToolBar">
@@ -22,7 +18,7 @@ export default function Question() {
           type="file"
           name="imageUpload"
           className="imageUpload"
-          accept="image/*" 
+          accept="image/*"
         />
       </div>
     </div>
