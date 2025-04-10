@@ -1,3 +1,8 @@
-.CreateStudy-button {
-    background-color: #28a745;
+.create-button {
+    background-color: #5E69FF;
+    color: white;
+}
+
+.create-button:hover {
+    background-color: #5E69FF;
 }

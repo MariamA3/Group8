@@ -1,15 +1,10 @@
-import SiteButton from "./Button";
-import './CreateStudyButton.css'; 
+import React from "react";
+import Button from "./Button";
 
-
-export default function CreateStudyButton() {
-  const handleClick = () => {
-    //create the study and push to the db, 
-  };
-
+export default function CreateStudyButton({ className = "", onClick }) {
   return (
-    <SiteButton onClick={handleClick} className="CreateStudy-button">
+    <Button onClick={onClick} className={`create-button ${className}`}>
       Create
-    </SiteButton>
+    </Button>
   );
 }
