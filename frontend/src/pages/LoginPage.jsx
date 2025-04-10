@@ -1,67 +1,98 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import './pages.css';
-import Navbar from '../components/navBar.jsx';
 
 function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('researcher@ntnu.no');
+  const [password, setPassword] = useState('password123');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Attempting to sign in with:', email);
+    setError('');
+    setIsLoading(true);
+    
+    try {
+      const result = await login(email, password);
+      
+      if (result.success) {
+        // Redirect to dashboard on successful login
+        navigate('/dashboard');
+      } else {
+        setError(result.error || 'Invalid login credentials');
+      }
+    } catch (err) {
+      setError('An error occurred during login');
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="page-container">
-      <div className="signin-page">
-        <div className="top-section">
-          <div className="page-title">Sign in Page</div>
-        </div>
+    <div className="login-container">
+      <div className="login-card">
+        <h1 className="welcome-heading">Welcome</h1>
+        <p className="signin-subheading">Sign in to your account</p>
         
-        <div className="content-container">
-          <div className="form-section">
-            <h1 className="welcome-heading">Welcome</h1>
-            <p className="signin-subheading">Sign in to your account</p>
-            
-            <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="email" className="form-label">Email</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  className="form-input" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Researcher@ntnu.no"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="password" className="form-label">Password</label>
-                <input 
-                  type="password" 
-                  id="password" 
-                  className="form-input" 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••••••••••"
-                />
-              </div>
-              
-              <div className="form-actions">
-                <button type="submit" className="signin-button">Sign in</button>
-                <a href="#forgot-password" className="forgot-password">Forgot password?</a>
-              </div>
-            </form>
+        {error && (
+          <div className="error-message">
+            {error}
           </div>
-          
-          <div className="illustration-section">
-            <img 
-              src="/signin-illustration.svg" 
-              alt="Person entering door illustration" 
-              className="signin-illustration" 
+        )}
+        
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email" className="form-label">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              className="form-input" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="researcher@ntnu.no"
+              required
             />
           </div>
+          
+          <div className="form-group">
+            <label htmlFor="password" className="form-label">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              className="form-input" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••••••••••••••"
+              required
+            />
+          </div>
+          
+          <div className="form-actions">
+            <button 
+              type="submit" 
+              className="signin-button"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Signing in...' : 'Sign in'}
+            </button>
+            <a href="#forgot-password" className="forgot-password">
+              Forgot password?
+            </a>
+          </div>
+        </form>
+        
+        <div className="example-credentials">
+          <p className="hint-text">
+            <strong>Example credentials:</strong><br />
+            Email: researcher@ntnu.no<br />
+            Password: password123
+          </p>
         </div>
       </div>
     </div>
