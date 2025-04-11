@@ -85,13 +85,13 @@ const ResultsPage = () => {
       <section className="card-container">
         {selectedStudy ? (
           <>
-            <div className="summary-card summary-card--expanded">
+            <div className="summary-card">
               <StudySummaryCard
                 study={selectedStudy}
                 onClick={() => {}}
                 selected={true}
               />
-              <div className="card-details">
+              <div className="summary-card summary-card--expanded">
                 {renderTable()}
               </div>
             </div>
