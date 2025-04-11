@@ -16,7 +16,7 @@ export default function Dashboard() {
     <div className="DashboardWrapper">
       <div className="DashboardHeader">
         <h1>Dashboard</h1>
-        <Link to="/create" className="DashboardButton">
+        <Link to="/create-study" className="DashboardButton">
           Create Study
         </Link>
       </div>
@@ -44,9 +44,11 @@ export default function Dashboard() {
                   </a>
                 </td>
                 <td>
-                  <a href={study.edit} className="edit-link">
-                    Edit
-                  </a>
+                  {study.status === "Active" && (
+                    <a href={study.edit} className="edit-link">
+                      Edit
+                    </a>
+                  )}
                 </td>
                 <td className={study.status.toLowerCase()}>{study.status}</td>
               </tr>
