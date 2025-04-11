@@ -6,17 +6,21 @@
 
 .QuestionWrapper {
     margin-bottom: 20px;
+    
   }
+  
   
 
   .AddQuestionButton {
-    padding: 10px 20px;
-    margin-top: 20px;
+    padding: 1rem;
+    margin: 1rem;
     background-color: var(--siteColor);
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+
+    
   }
   
   .AddQuestionButton:hover {

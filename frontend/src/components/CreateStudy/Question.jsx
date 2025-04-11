@@ -12,11 +12,14 @@ export default function Question({ number }) {
         <input name="question" placeholder="Enter question" />
         <select name="feedbackType" className="dropdown">
           <option value="percent-slider">Feedback type</option>
-          <option value="percent-slider">Percent Slider</option>
+          <option value="S-slider">Percent slider</option>
+          <option value="S-slider">Bullet slider</option>
+          <option value="S-slider">Range slider</option>
+
         </select>
         <div className="fileUploadWrapper">
           <label htmlFor="imageUpload" className="fileUploadLabel">
-            Upload Image
+            Upload Artefact
           </label>
           <input
             type="file"

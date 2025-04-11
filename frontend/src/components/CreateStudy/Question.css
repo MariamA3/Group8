@@ -51,6 +51,7 @@ input[name="question"]:focus {
 
 select[name='feedbackType']{
     border: none;
+    background-color: white ;
 }
 
 
