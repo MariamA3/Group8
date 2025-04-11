@@ -2,26 +2,27 @@ import React, { useEffect, useState } from 'react';
 import './pages.css';
 import './ResultsPage.css';
 import StudySummaryCard from '../components/StudySummaryCard';
-import mockStudies from '../data/mockStudies';
 
 const ResultsPage = () => {
   const [studies, setStudies] = useState([]);
   const [selectedStudy, setSelectedStudy] = useState(null);
 
-  useEffect(() => {
-    // Fetching the studies-route, as the API endpoint.
-    const fetchStudies = async () => {
-      const response = await fetch('/api/studies'); // Your API endpoint
-      const data = await response.json();
-      setStudies(data);
-    };
-    fetchStudies();
-  }, []);
+  // Actual fetching of the studies from the API, comment out to use mock data instead.
+  // useEffect(() => {
+  //   // Fetching the studies-route, as the API endpoint.
+  //   const fetchStudies = async () => {
+  //     const response = await fetch('/api/studies'); // Your API endpoint
+  //     const data = await response.json();
+  //     setStudies(data);
+  //   };
+  //   fetchStudies();
+  // }, []);
 
   // Mock data for demonstration purposes.
   useEffect(() => {
-    // Use mock data instead of fetching from API
-    setStudies(mockStudies);
+    fetch('/mockStudies.json')
+      .then(res => res.json())
+      .then(data => setStudies(data));
   }, []);
 
   // Handling the click on a study card to show the results.
@@ -82,16 +83,30 @@ const ResultsPage = () => {
     <main className="results-container">
       <h1>Results</h1>
       <section className="card-container">
-        {!selectedStudy ? (
-          studies.map((study) => (
-            <StudySummaryCard
-              key={study.id}
-              study={study}
-              onClick={handleCardClick}
-            />
-          ))
+        {selectedStudy ? (
+          <>
+            <div className="summary-card summary-card--expanded">
+              <StudySummaryCard
+                study={selectedStudy}
+                onClick={() => {}}
+                selected={true}
+              />
+              <div className="card-details">
+                {renderTable()}
+              </div>
+            </div>
+          </>
         ) : (
-          renderTable()
+          <div className="summary-card">
+            {studies.map((study) => (
+              <StudySummaryCard
+                key={study.id}
+                study={study}
+                onClick={handleCardClick}
+                selected={false}
+              />
+            ))}
+          </div>
         )}
       </section>
     </main>
