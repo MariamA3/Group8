@@ -1,0 +1,57 @@
+:root {
+    /*add font family*/
+    /*---study-color: #b1b4eb;*/
+
+}
+
+body {
+   background-color: #FCF7F8;
+}
+
+.studyFormWrapper {
+    margin-left: 4rem;
+    margin-right: 4rem;
+}
+
+.createStudyTitle {
+    font-size: 2.5rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+
+}
+
+.studyFormHeader {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center; 
+    margin-bottom: 20px; 
+}
+
+.buttonLine {
+    display: flex;
+    gap: 1rem;
+}
+
+
+.CreateStudyButton {
+    background-color: #62db66;
+    color: black;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.8rem;
+    font-size: 1rem;
+}
+
+.CreateStudyPublish{
+    color: white;
+    background-color: #5E69FF;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.8rem;
+    font-size: 1rem;
+}
+
+
+.QuestionListWrapper {
+    margin-top: 4rem;
+}
