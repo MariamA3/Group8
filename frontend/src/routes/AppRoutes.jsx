@@ -7,8 +7,8 @@ import HomePage from '../pages/homepage';
 import AboutPage from '../pages/AboutPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
-import DashboardPage from '../pages/DashboardPage';
-import CreateStudyPage from '../pages/CreateStudyPage';
+import Dashboard from '../components/Dashboard/Dashboard';
+import CreateStudy from '../components/CreateStudy/StudyForm';
 import ResultsPage from '../pages/ResultsPage';
 import NotFoundPage from '../pages/NotFoundPage';
 
@@ -63,14 +63,16 @@ const AppRoutes = () => {
       
       {/* Protected routes - must be logged in */}
       <Route path="/dashboard" element={
-        <ProtectedRoute>
-          <DashboardPage />
-        </ProtectedRoute>
+        //Made public for the presentation
+        <PublicRoute>
+          <Dashboard />
+        </PublicRoute>
       } />
       <Route path="/create-study" element={
-        <ProtectedRoute>
-          <CreateStudyPage />
-        </ProtectedRoute>
+        //made public for the presentation
+        <PublicRoute>
+          <CreateStudy/>
+        </PublicRoute>
       } />
       <Route path="/results" element={
         <ProtectedRoute>
