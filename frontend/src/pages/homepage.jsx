@@ -29,9 +29,9 @@ function HomePage() {
           
           <div className="content-right">
             <img 
-              src="/research-illustration.svg" 
+              src="../../public/homepage.svg" 
               alt="People analyzing research data" 
-              className="research-illustration" 
+              className="research-illustration-homepage" 
             />
           </div>
         </div>
