@@ -9,7 +9,8 @@ const ArtefactSchema = new mongoose.Schema({
     fileUrl: { 
         type: String, 
         required: true,
-        match: /\.(jpg|jpeg|png|gif|mp4|mov|avi|mp3|wav|ogg)$/i, // Restricts allowed file types
+        // Restricts allowed file types
+        match: /\.(jpg|jpeg|png|gif|mp4|mov|avi|mp3|wav|ogg)$/i, 
     },
     createdAt: { type: Date, default: Date.now },
 });
