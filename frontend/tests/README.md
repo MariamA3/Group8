@@ -1,8 +1,8 @@
-# 🧪 Frontend Testing Plan
+#  Frontend Testing Plan
 
 This folder contains all tests related to the **frontend** of our project.
 
-## ✅ What We Need to Test
+##  What We Need to Test
 
 We must include **two test suites** in the frontend:
 
@@ -52,14 +52,14 @@ etc
 
 ---
 
-## 🛠 Tools
+##  Tools
 
 - Jest (unit/component)
 - React Testing Library (for components)
 - Cypress or Playwright (E2E)
 - Mocking: Use `jest.mock()` or mock service worker for failed fetches
 
-## ▶️ How to Run
+## ▶ How to Run
 
 Whoever has the responsibility can write it here
 
