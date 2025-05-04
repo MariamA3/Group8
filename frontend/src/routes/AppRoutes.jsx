@@ -7,7 +7,7 @@ import HomePage from '../pages/homepage';
 import AboutPage from '../pages/AboutPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
-import Dashboard from '../components/Dashboard/Dashboard';
+import Dashboard from '../pages/DashboardPage';
 import CreateStudy from '../components/CreateStudy/StudyForm';
 import ResultsPage from '../pages/ResultsPage';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -30,6 +30,7 @@ const ProtectedRoute = ({ children }) => {
 // Public route that redirects logged-in users
 const PublicRoute = ({ children }) => {
   const { isLoggedIn, loading } = useContext(AuthContext);
+  console.log('PublicRoute:', { isLoggedIn, loading });
   
   if (loading) {
     return <div>Loading...</div>;
@@ -64,9 +65,9 @@ const AppRoutes = () => {
       {/* Protected routes - must be logged in */}
       <Route path="/dashboard" element={
         //Made public for the presentation
-        <PublicRoute>
+        <ProtectedRoute>
           <Dashboard />
-        </PublicRoute>
+        </ProtectedRoute>
       } />
       <Route path="/create-study" element={
         //made public for the presentation
