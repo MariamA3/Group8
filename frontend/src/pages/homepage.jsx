@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Navbar from '../components/navBar.jsx';
-import './pages.css';
+import './styles/pages.css';
 
 function HomePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

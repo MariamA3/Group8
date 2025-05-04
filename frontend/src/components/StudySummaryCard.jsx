@@ -1,4 +1,4 @@
-import './components.css';
+import './styles/components.css';
 
 function StudySummaryCard({ study, onClick, selected }) {
   const participantCount = study.participants?.length || 0;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import './pages.css';
-import './ResultsPage.css';
+import './styles/pages.css';
+import './styles/ResultsPage.css';
 import StudySummaryCard from '../components/StudySummaryCard';
 
 const ResultsPage = () => {

@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
-import './components.css';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import './styles/components.css';
 
 function Navbar() {
   // Use context instead of local state for authentication
