@@ -1,7 +1,11 @@
 /* ### CSS for the Results-page and its StudySummaryCard-component. ### */
+* {
+    box-sizing: border-box;
+  }  
 
 /* The page title (header) */
 h1 {
+    color: #777;
     margin: 10px auto;
 }
 
@@ -121,11 +125,15 @@ th, td {
 
 /* Helper-text for information on how to return/go back from a specific study. */
 .return-text {
-    font-style: italic;
-    font-size: 1.2em;
     background-color: #777;
     color: white;
+    font-style: italic;
+    font-size: 1.2em;
+    margin: 0 auto;
     margin-top: 1rem;
+    border-radius: 10px;
     cursor: pointer;
     display: inline-block;
+    padding: 10px;
+    text-align: center;
 }
