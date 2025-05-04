@@ -69,13 +69,21 @@ const AppRoutes = () => {
           <Dashboard />
         </ProtectedRoute>
       } />
+
       <Route path="/create-study" element={
         //made public for the presentation
         <PublicRoute>
           <CreateStudy/>
         </PublicRoute>
       } />
+
       <Route path="/results" element={
+        <ProtectedRoute>
+          <ResultsPage />
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/results/:id" element={
         <ProtectedRoute>
           <ResultsPage />
         </ProtectedRoute>
