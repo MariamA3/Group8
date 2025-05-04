@@ -56,11 +56,11 @@ Author:
 
 ---
 
-## 🛠 Tools
+##  Tools
 
 Check blackboard slides 
 
-## ▶️ How to Run
+## ▶ How to Run
 
 Whoever has the responsibility can write it here
 
