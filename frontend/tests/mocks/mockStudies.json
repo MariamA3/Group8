@@ -1,0 +1,12 @@
+[
+    {
+      "id": "study1",
+      "name": "Memory Retention",
+      "questions": ["Q1", "Q2"],
+      "participants": [
+        { "id": "p1", "answers": [3, 4] },
+        { "id": "p2", "answers": [2, 5] }
+      ]
+    }
+  ]
+  
