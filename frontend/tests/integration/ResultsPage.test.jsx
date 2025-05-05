@@ -9,7 +9,7 @@ import { MemoryRouter } from 'react-router-dom';
 // ### Integration tests for studies & "ResultsPage.jsx" ###
 // #########################################################
 // Testing without MSW since we couldn't get it to work in time.
-describe('ResultsPage without MSW', () => {
+describe('Basic ResultsPage-test without MSW', () => {
   beforeEach(() => {
     global.fetch = vi.fn(() =>
       Promise.resolve({
