@@ -56,6 +56,20 @@ describe('POST /api/studies', () => {
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toMatch(/Researcher and Title are required/);
   });
+
+  it('should accept a study with minimum valid title (boundary case)', async () => {
+    const res = await request(app).post('/api/studies').send({
+      researcher: new mongoose.Types.ObjectId(),
+      title: 'a',
+      description: 'Boundary test for title length',
+      status: 'active',
+      startdatem: new Date(),
+      endDatem: new Date()
+    });
+    expect(res.statusCode).toBe(201);
+    expect(res.body.savedStudy.title).toBe('a');
+  });
+  
 });
 
 describe('PUT /api/studies/:id and DELETE /api/studies/:id', () => {
