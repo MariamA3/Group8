@@ -27,6 +27,7 @@ export default function Question({ number }) {
             name="imageUpload"
             className="fileUploadInput"
             accept="image/*"
+            multiple
           />
         </div>
       </div>

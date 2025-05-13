@@ -32,14 +32,14 @@ const getModel = async (Model, req, res, itemName) => {
 //delete model 
 
 const deleteModel = async(Model, req, res, itemName)=>{
-    try{
+    try {
         const item = await Model.findByIdAndDelete(req.params.id);  
-        if(!item){
-            res.status(404).json({message: `${itemName} not found` })
+        if (!item) {
+            return res.status(404).json({ message: `${itemName} not found` });
         }
-        res.status(200).json({message: `${itemName} deleted` })
-    }catch(error){
-        res.status(500).json({message: `Error deleting the ${itemName}; ${error.message}`})
+        return res.status(200).json({ message: `${itemName} deleted` });
+    } catch(error) {
+        return res.status(500).json({ message: `Error deleting the ${itemName}; ${error.message}` });
     }
 }
 
