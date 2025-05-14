@@ -1,6 +1,6 @@
 import "./Question.css";
 
-export default function Question({ number, question, updateQuestion }) {
+export default function Question({ number, question, updateQuestion, removeQuestion }) {
   const handleInputChange = (e) => {
     updateQuestion({ ...question, questionText: e.target.value });
   };
@@ -19,7 +19,8 @@ export default function Question({ number, question, updateQuestion }) {
     });
 
     const json = await res.json();
-    return json.fileUrl; // backend returns fileUrl
+    // backend returns fileUrl
+    return json.fileUrl; 
   }
 
   const handleFileChange = async (e) => {
@@ -66,6 +67,9 @@ export default function Question({ number, question, updateQuestion }) {
     <div className="QuestionWrapper">
       <div className="QuestionToolBar">
         <span>Question {number}</span>
+        <button className="RemoveQuestionButton" onClick={removeQuestion}>
+          <img src="/trash-delete-white-icon.png" alt="Remove" className="trashIcon" />
+        </button>
       </div>
       <div className="QuestionBar">
         <input
@@ -86,9 +90,7 @@ export default function Question({ number, question, updateQuestion }) {
           <option value="bullet-slider">Bullet slider</option>
           <option value="range-slider">Range slider</option>
           <option value="text-field">Text field</option>
-          <option value="multiple-choice">Multiple choice</option>
           <option value="comparison">Comparison</option>
-          <option value="ranking">Ranking</option>
         </select>
 
         <div className="artefactSlot">

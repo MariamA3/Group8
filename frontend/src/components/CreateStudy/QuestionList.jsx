@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Question from "./Question";
 import './QuestionList.css';
 
@@ -16,6 +15,14 @@ export default function QuestionList({ questions, setQuestions }) {
     setQuestions(updated);
   };
 
+  const removeQuestion = (index) => {
+    // minimum of 4
+    if (questions.length <= 4) return; 
+    const updated = [...questions];
+    updated.splice(index, 1);
+    setQuestions(updated);
+  };
+
   return (
     <div className="QuestionList">
       {questions.map((question, index) => (
@@ -24,6 +31,7 @@ export default function QuestionList({ questions, setQuestions }) {
           number={index + 1}
           question={question}
           updateQuestion={(updated) => updateQuestion(index, updated)}
+          removeQuestion={() => removeQuestion(index)}
         />
       ))}
 
