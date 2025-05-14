@@ -11,13 +11,6 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use(cors());
 
-// Serving the frontend build files.
-app.use(express.static(path.join(__dirname, 'frontend/dist')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'));
-});
-
 // Load environment variables from .env file
 dotenv.config();
 
@@ -37,10 +30,19 @@ routes.forEach(route => {
 });
 
 
+// Serving the frontend build files.
+app.use(express.static(path.join(__dirname, 'frontend/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'));
+});
+
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+
 
 
 module.exports = app;
