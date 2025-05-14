@@ -14,7 +14,7 @@ import NotFoundPage from '../pages/NotFoundPage';
 
 // Protected route component
 const ProtectedRoute = ({ children }) => {
-  const { isLoggedIn, loading } = useContext(AuthContext);
+  const { isLoggedIn, loading } = useContext(true);
   
   if (loading) {
     return <div>Loading...</div>;
