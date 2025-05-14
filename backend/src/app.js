@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
 const dbConnection = require('./dbConnection');
 const path = require("path");
 
@@ -22,15 +22,20 @@ app.get("/", (req, res) => {
     res.send("Server is running!");
 });
 
-// legg til routes her sp slipper vi mange linjer
-// 'authRoutes', 'studyRoutes', <--remove dfor debugging app.js
-const routes = [ 'artefactRoutes', 'studyRoutes', 'invitationRoutes' ];
+// Add routes
+const routes = ['artefactRoutes', 'studyRoutes', 'invitationRoutes'];
 routes.forEach(route => {
     app.use('/api', require(`./routes/${route}`));
 });
 
+// Serve static files from the "uploads" directory
+app.use("/uploads", express.static("uploads")); // Serve static files
 
-// Serving the frontend build files.
+// Connect upload route
+const uploadRoutes = require("./routes/uploadRoutes");
+app.use("/api/upload", uploadRoutes); // Connect the route
+
+// Serving the frontend build files
 app.use(express.static(path.join(__dirname, 'frontend/dist')));
 
 app.get('*', (req, res) => {
@@ -42,9 +47,4 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
 
-
-
-
 module.exports = app;
-
-
