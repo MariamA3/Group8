@@ -9,13 +9,29 @@ export default function Question({ number, question, updateQuestion }) {
     updateQuestion({ ...question, feedbackType: e.target.value });
   };
 
-  const handleFileChange = (e) => {
+  async function uploadToServer(file) {
+    const data = new FormData();
+    data.append("file", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: data,
+    });
+
+    const json = await res.json();
+    return json.fileUrl; // backend returns fileUrl
+  }
+
+  const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
-    const artefacts = files.map((file) => ({
-      file,
-      url: URL.createObjectURL(file),
-    }));
-    updateQuestion({ ...question, artefacts });
+    const uploadedArtefacts = await Promise.all(
+      files.map(async (file) => {
+        const url = await uploadToServer(file);
+        return { file, url };
+      })
+    );
+
+    updateQuestion({ ...question, artefacts: uploadedArtefacts });
   };
 
   const renderArtefactUpload = () => {

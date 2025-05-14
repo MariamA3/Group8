@@ -8,7 +8,7 @@ import QuestionList from "./QuestionList";
 export default function StudyForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [error , setError] = useState("")
+  const [error, setError] = useState("");
 
   const [questions, setQuestions] = useState([
     { questionText: "", feedbackType: "", artefacts: [] },
@@ -17,18 +17,40 @@ export default function StudyForm() {
     { questionText: "", feedbackType: "", artefacts: [] },
     { questionText: "", feedbackType: "", artefacts: [] },
   ]);
-  
 
-  //fix alert delene
+  const researcherId = "6824a97710175a3a9e9bb9f4";
 
-  const researcherId = "hardcoded-id-or-from-auth"; // Replace with actual researcher ID logic later
+  const validateForm = () => {
+    if (!title.trim()) {
+      setError("Study title is required.");
+      return false;
+    }
+
+    const hasValidQuestion = questions.some((q) => {
+      if (!q.questionText.trim() || !q.feedbackType) return false;
+      if (["comparison", "multiple-choice"].includes(q.feedbackType) || q.feedbackType.includes("slider")) {
+        return q.artefacts.length > 0;
+      }
+      return true;
+    });
+
+    if (!hasValidQuestion) {
+      setError("At least one complete question with artefact is required.");
+      return false;
+    }
+
+    setError("");
+    return true;
+  };
 
   const handleSaveOrPublishStudy = async (status) => {
+    if (!validateForm()) return;
+
     const studyData = {
       researcher: researcherId,
       title,
       description,
-      status
+      status,
     };
 
     try {
@@ -40,38 +62,39 @@ export default function StudyForm() {
 
       const result = await response.json();
       if (!response.ok) {
-        alert(`Error: ${result.message}`);
+        setError(result.message || "Error saving study");
         return;
       }
 
       const studyId = result.savedStudy._id;
 
-      // bmit artefacts for each question
       for (const q of questions) {
         for (const artefact of q.artefacts) {
           const artefactData = {
             study: studyId,
             researcher: researcherId,
             title: q.questionText,
-            //hva er dette? 
             description: "Artefact for question",
-            // This assumes file has already been uploaded and has a URL
-            fileUrl: artefact.url 
+            fileUrl: artefact.url,
           };
 
           await fetch("/api/artefacts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(artefactData)
+            body: JSON.stringify(artefactData),
           });
         }
       }
 
-      alert(`Study ${status === 'active' ? 'published' : 'saved as draft'}!`);
+      alert(`Study ${status === "active" ? "published" : "saved as draft"}!`);
+      // Optional: Reset form after success
+      setTitle("");
+      setDescription("");
+      setQuestions([
+        { questionText: "", feedbackType: "", artefacts: [] },
+      ]);
     } catch (err) {
-        //fin noe å gjøre med denne error, må kanskje vises på siden om deet er feil som skjer 
-        setError(err.message);
-
+      setError("Server error: " + err.message);
     }
   };
 
@@ -91,13 +114,16 @@ export default function StudyForm() {
         </div>
       </div>
 
+
       <StudyHeader
         title={title}
         setTitle={setTitle}
         description={description}
         setDescription={setDescription}
       />
+     {error && <div className="errorMessage">{error}</div>}
 
+     
       <div className="QuestionListWrapper">
         <QuestionList questions={questions} setQuestions={setQuestions} />
       </div>
