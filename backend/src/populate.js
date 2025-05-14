@@ -1,40 +1,75 @@
 const mongoose = require("mongoose");
-const dbConnection = require("./dbConnection");
+const dotenv = require("dotenv");
+dotenv.config();
+
 const Researcher = require("./models/researcher");
 const Study = require("./models/study");
 const Artefact = require("./models/artefact");
+const Participant = require("./models/participant");
+const Feedback = require("./models/feedback");
 
-async function populateDB() {
-    try {
-        await dbConnection();
-        await mongoose.connection.db.dropDatabase();
-        
-        const researchers = await Researcher.insertMany([
-            { name: "Alice Johnson", email: "alice@example.com", passwordHash: "hashedpassword123" },
-            { name: "Bob Smith", email: "bob@example.com", passwordHash: "hashedpassword456" },
-            { name: "Charlie Davis", email: "charlie@example.com", passwordHash: "hashedpassword789" }
-        ]);
-        
-        const studies = await Study.insertMany([
-            { researcher: researchers[0]._id, title: "AI and Human Behavior", description: "A study on AI's impact on decision-making.", status: "active", startDate: new Date("2025-04-01"), endDate: new Date("2025-09-30") },
-            { researcher: researchers[1]._id, title: "Neuroscience and Learning", description: "How the brain adapts to learning.", status: "active", startDate: new Date("2025-05-01"), endDate: new Date("2025-10-30") },
-            { researcher: researchers[2]._id, title: "Social Media Influence", description: "A study on social media's effect on behavior.", status: "draft", startDate: new Date("2025-06-01"), endDate: new Date("2025-12-31") }
-        ]);
-        
-        await Artefact.insertMany([
-            { study: studies[0]._id, researcher: researchers[0]._id, title: "AI-generated Images", description: "Examples of AI-generated art.", fileUrl: "https://example.com/image1.png", fileType: "image", fileSize: 204800 },
-            { study: studies[0]._id, researcher: researchers[0]._id, title: "Decision-making Video", description: "A video on AI-driven choices.", fileUrl: "https://example.com/video1.mp4", fileType: "video", fileSize: 1048576 },
-            { study: studies[1]._id, researcher: researchers[1]._id, title: "Brain Activity Scan", description: "MRI scan of a learning brain.", fileUrl: "https://example.com/image2.png", fileType: "image", fileSize: 307200 },
-            { study: studies[1]._id, researcher: researchers[1]._id, title: "Neural Response Audio", description: "Audio clip of brainwaves.", fileUrl: "https://example.com/audio1.wav", fileType: "audio", fileSize: 512000 },
-            { study: studies[2]._id, researcher: researchers[2]._id, title: "Social Media Impact Chart", description: "A graph on engagement trends.", fileUrl: "https://example.com/image3.png", fileType: "image", fileSize: 256000 }
-        ]);
-        
-        console.log("Database populated successfully");
-        mongoose.connection.close();
-    } catch (error) {
-        console.error("Error populating database:", error);
-        mongoose.connection.close();
+async function seed() {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("Connected to MongoDB");
+
+    // clear the collections
+    await Promise.all([
+      Researcher.deleteMany(),
+      Study.deleteMany(),
+      Artefact.deleteMany(),
+      Participant.deleteMany(),
+      Feedback.deleteMany(),
+    ]);
+
+    // create a researcher
+    const researcher = await Researcher.create({
+      name: "Dr. Said ",
+      email: "mariam@example.com",
+      passwordHash: "testings", 
+    });
+
+    const studies = [];
+
+    for (let i = 1; i <= 2; i++) {
+      const study = await Study.create({
+        researcher: researcher._id,
+        title: `AI vs Human Study ${i}`,
+        description: `A study to evaluate human perception of AI vs human-generated content (Phase ${i}).`,
+        status: "active",
+        startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      });
+
+      studies.push(study);
+
+      for (let j = 1; j <= 2; j++) {
+        const artefact = await Artefact.create({
+          study: study._id,
+          researcher: researcher._id,
+          title: `Artefact ${j} (Study ${i})`,
+          description: "Generated artefact for testing perception.",
+          fileUrl: `https://picsum.photos/200/300`,
+        });
+
+        for (let k = 1; k <= 2; k++) {
+          const participant = await Participant.create({});
+          await Feedback.create({
+            artefact: artefact._id,
+            participant: participant._id,
+            rating: Math.floor(Math.random() * 5) + 1,
+            comment: Math.random() > 0.5 ? "Looks real to me." : "Feels AI-generated.",
+          });
+        }
+      }
     }
+
+    console.log(" Dummy data successfully inserted.");
+    process.exit();
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
 }
 
-populateDB();
+seed();
