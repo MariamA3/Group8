@@ -27,7 +27,7 @@
 
 .studyTitle:focus,
 .studyDescription:focus {
-    border: 2px solid var(--siteColor);
+    border-bottom: 2px solid var(--siteColor);
 }
 
 .studyDescription {
