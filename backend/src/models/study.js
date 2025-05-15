@@ -1,14 +1,19 @@
-const mongoose = require('mongoose');
- 
-const studySchema = new mongoose.Schema({
-    researcher: { type: mongoose.Schema.Types.ObjectId, ref: "Researcher", required: true },
-    title: { type: String, required: true },
-    description: { type: String },
-    //three modes here so we have better control of what is posted
-    status: { type: String, enum: ["draft", "active", "completed"], default: "draft" },
-    startDate: { type: Date },  
-    endDate: { type: Date }, 
-    createdAt: { type: Date, default: Date.now },   
+const mongoose = require("mongoose");
+
+const questionSchema = new mongoose.Schema({
+  questionText: String,
+  feedbackType: String
 });
-const Study = mongoose.model('Study', studySchema);
-module.exports = Study;
+
+const studySchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: String,
+  researcher: { type: mongoose.Schema.Types.ObjectId, ref: "Researcher" },
+  status: String,
+  startDate: String,
+  endDate: String,
+  questions: [questionSchema],
+  createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model("Study", studySchema);
