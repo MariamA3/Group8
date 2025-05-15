@@ -46,16 +46,22 @@ export default function Question({
       question.feedbackType === "comparison" ||
       question.feedbackType.includes("slider") ||
       question.feedbackType === "multiple-choice";
-  
+
     return (
       <div
         className="fileUploadWrapper"
-        style={{ visibility: showUpload ? "visible" : "hidden" }}
+        style={{
+          opacity: showUpload ? 1 : 0,
+          pointerEvents: showUpload ? "auto" : "none",
+        }}
       >
         <label
           htmlFor={`fileUpload-${number}`}
           className="fileUploadLabel"
-          style={{ pointerEvents: showUpload ? "auto" : "none", opacity: showUpload ? 1 : 0 }}
+          style={{
+            pointerEvents: showUpload ? "auto" : "none",
+            opacity: showUpload ? 1 : 0,
+          }}
         >
           Upload {count > 1 ? `${count} Artefacts` : "Artefact"}
         </label>
@@ -80,7 +86,6 @@ export default function Question({
       </div>
     );
   };
-  
 
   return (
     <div className="QuestionWrapper">
