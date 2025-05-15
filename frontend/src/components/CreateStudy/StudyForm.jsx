@@ -7,65 +7,79 @@ import CreateStudyPublish from "../Buttons/CreateStudyPublish";
 import QuestionList from "./QuestionList";
 import { toast } from "react-hot-toast";
 
-export default function StudyForm() {
-  const [title, setTitle] = useState(
-    () => localStorage.getItem("draft-title") || ""
+export default function StudyForm({
+  mode = "create",
+  initialStudy = {},
+  initialQuestions = [],
+}) {
+  const navigate = useNavigate();
+  const researcherId = "6824a97710175a3a9e9bb9f4";
+
+  const [title, setTitle] = useState(() =>
+    mode === "edit"
+      ? initialStudy.title || ""
+      : localStorage.getItem("draft-title") || ""
   );
-  const [description, setDescription] = useState(
-    () => localStorage.getItem("draft-description") || ""
+  const [description, setDescription] = useState(() =>
+    mode === "edit"
+      ? initialStudy.description || ""
+      : localStorage.getItem("draft-description") || ""
   );
-  const [startDate, setStartDate] = useState(
-    () => localStorage.getItem("draft-startDate") || ""
+  const [startDate, setStartDate] = useState(() =>
+    mode === "edit"
+      ? initialStudy.startDate || ""
+      : localStorage.getItem("draft-startDate") || ""
   );
-  const [endDate, setEndDate] = useState(
-    () => localStorage.getItem("draft-endDate") || ""
+  const [endDate, setEndDate] = useState(() =>
+    mode === "edit"
+      ? initialStudy.endDate || ""
+      : localStorage.getItem("draft-endDate") || ""
   );
+
+  const [questions, setQuestions] = useState(() =>
+    mode === "edit"
+      ? initialQuestions
+      : JSON.parse(localStorage.getItem("draft-questions")) || [
+          { questionText: "", feedbackType: "", artefacts: [] },
+          { questionText: "", feedbackType: "", artefacts: [] },
+          { questionText: "", feedbackType: "", artefacts: [] },
+          { questionText: "", feedbackType: "", artefacts: [] },
+          { questionText: "", feedbackType: "", artefacts: [] },
+        ]
+  );
+
   const [loading, setLoading] = useState(false);
 
+  // LocalStorage syncing (only in create mode)
   useEffect(() => {
+    if (mode === "edit") return;
+
     const interval = setInterval(() => {
       localStorage.setItem("draft-title", title);
       localStorage.setItem("draft-description", description);
       localStorage.setItem("draft-startDate", startDate);
       localStorage.setItem("draft-endDate", endDate);
-      // every 15 seconds
-    }, 15000); 
-  // cleanup
-    return () => clearInterval(interval); 
-  }, [title, description, startDate, endDate]);
-  
+    }, 15000);
 
-  const navigate = useNavigate();
-
-  const [questions, setQuestions] = useState(() => {
-    const saved = localStorage.getItem("draft-questions");
-    return saved
-      ? JSON.parse(saved)
-      : [
-          { questionText: "", feedbackType: "", artefacts: [] },
-          { questionText: "", feedbackType: "", artefacts: [] },
-          { questionText: "", feedbackType: "", artefacts: [] },
-          { questionText: "", feedbackType: "", artefacts: [] },
-          { questionText: "", feedbackType: "", artefacts: [] },
-        ];
-  });
+    return () => clearInterval(interval);
+  }, [title, description, startDate, endDate, mode]);
 
   useEffect(() => {
+    if (mode === "edit") return;
+
     const interval = setInterval(() => {
       localStorage.setItem("draft-questions", JSON.stringify(questions));
     }, 15000);
 
     return () => clearInterval(interval);
-  }, [questions]);
-
-  const researcherId = "6824a97710175a3a9e9bb9f4";
+  }, [questions, mode]);
 
   const validateForm = () => {
     if (!title.trim()) {
       toast.error("Study title is required.");
       return false;
     }
-  
+
     if (
       startDate &&
       endDate &&
@@ -74,12 +88,12 @@ export default function StudyForm() {
       toast.error("End date must be after start date.");
       return false;
     }
-  
+
     if (questions.length === 0) {
       toast.error("You must add at least one question before submitting.");
       return false;
     }
-  
+
     const hasValidQuestion = questions.some((q) => {
       if (!q.questionText.trim() || !q.feedbackType) return false;
       if (
@@ -90,36 +104,44 @@ export default function StudyForm() {
       }
       return true;
     });
-  
+
     if (!hasValidQuestion) {
       toast.error("At least one complete question with artefact is required.");
       return false;
     }
-  
+
     return true;
   };
-  
+
   const handleSaveOrPublishStudy = async (status) => {
     if (!validateForm()) return;
 
     setLoading(true);
-    const loadingToast = toast.loading("Saving your study...");
-
     const studyData = {
-      researcher: researcherId,
-      title,
-      description,
-      startDate,
-      endDate,
-      status,
-    };
+        researcher: researcherId,
+        title,
+        description,
+        startDate,
+        endDate,
+        status,
+        questions: questions.map(q => ({
+          questionText: q.questionText,
+          feedbackType: q.feedbackType
+        }))
+      };
+      
 
     try {
-      const response = await fetch("/api/studies", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(studyData),
-      });
+      const response = await fetch(
+        mode === "edit"
+          ? `/api/studies/${initialStudy._id}`
+          : "/api/studies",
+        {
+          method: mode === "edit" ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(studyData),
+        }
+      );
 
       const result = await response.json();
       if (!response.ok) {
@@ -130,10 +152,12 @@ export default function StudyForm() {
         return;
       }
 
-      const studyId = result.savedStudy._id;
+      const studyId = mode === "edit" ? initialStudy._id : result.savedStudy._id;
 
       for (const q of questions) {
         for (const artefact of q.artefacts) {
+          if (!artefact.url) continue;
+
           const artefactData = {
             study: studyId,
             researcher: researcherId,
@@ -161,8 +185,13 @@ export default function StudyForm() {
         }
       }
 
-      // Clear localStorage on success
-    ["draft-title", "draft-description", "draft-startDate", "draft-endDate", "draft-questions"].forEach(item => localStorage.removeItem(item));
+      if (mode === "create") {
+        localStorage.removeItem("draft-title");
+        localStorage.removeItem("draft-description");
+        localStorage.removeItem("draft-startDate");
+        localStorage.removeItem("draft-endDate");
+        localStorage.removeItem("draft-questions");
+      }
 
       toast.success(
         `Study ${status === "active" ? "published" : "saved as draft"}!`
@@ -172,8 +201,6 @@ export default function StudyForm() {
       toast.error("Server error: " + err.message);
     } finally {
       setLoading(false);
-      toast.dismiss(loadingToast);
-
     }
   };
 
@@ -208,10 +235,7 @@ export default function StudyForm() {
           <input
             type="date"
             value={startDate}
-            onChange={(e) => {
-              setStartDate(e.target.value);
-              localStorage.setItem("draft-startDate", e.target.value);
-            }}
+            onChange={(e) => setStartDate(e.target.value)}
           />
         </label>
         <label>
@@ -219,15 +243,10 @@ export default function StudyForm() {
           <input
             type="date"
             value={endDate}
-            onChange={(e) => {
-              setEndDate(e.target.value);
-              localStorage.setItem("draft-endDate", e.target.value);
-            }}
+            onChange={(e) => setEndDate(e.target.value)}
           />
         </label>
       </div>
-
-     
 
       <div className="QuestionListWrapper">
         <QuestionList questions={questions} setQuestions={setQuestions} />
