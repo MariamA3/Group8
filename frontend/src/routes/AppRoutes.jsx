@@ -7,11 +7,12 @@ import HomePage from '../pages/homepage';
 import AboutPage from '../pages/AboutPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
-import Dashboard from '../pages/DashboardPage';
+import Dashboard from '../components/Dashboard/Dashboard';
 import CreateStudy from '../components/CreateStudy/StudyForm';
 import ResultsPage from '../pages/ResultsPage';
 import NotFoundPage from '../pages/NotFoundPage';
-
+import EditStudyForm from '../components/editStudy/editstudyForm';
+import TakeStudy from '../components/TakeStudy/TakeStudy';
 // Protected route component
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useContext(true);
@@ -65,15 +66,30 @@ const AppRoutes = () => {
       {/* Protected routes - must be logged in */}
       <Route path="/dashboard" element={
         //Made public for the presentation
-        <ProtectedRoute>
+        <PublicRoute>
           <Dashboard />
-        </ProtectedRoute>
+        </PublicRoute>
       } />
 
       <Route path="/create-study" element={
         //made public for the presentation
         <PublicRoute>
           <CreateStudy/>
+        </PublicRoute>
+      } />
+
+<Route path="/study/:id" element={
+        //made public for the presentation
+        <PublicRoute>
+          <TakeStudy/>
+        </PublicRoute>
+      } />
+
+
+      <Route path="/edit/:id" element={
+        //made public for the presentation
+        <PublicRoute>
+          <EditStudyForm/>
         </PublicRoute>
       } />
 
