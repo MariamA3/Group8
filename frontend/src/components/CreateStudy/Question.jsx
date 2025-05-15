@@ -1,6 +1,11 @@
 import "./Question.css";
 
-export default function Question({ number, question, updateQuestion, removeQuestion }) {
+export default function Question({
+  number,
+  question,
+  updateQuestion,
+  removeQuestion,
+}) {
   const handleInputChange = (e) => {
     updateQuestion({ ...question, questionText: e.target.value });
   };
@@ -20,7 +25,7 @@ export default function Question({ number, question, updateQuestion, removeQuest
 
     const json = await res.json();
     // backend returns fileUrl
-    return json.fileUrl; 
+    return json.fileUrl;
   }
 
   const handleFileChange = async (e) => {
@@ -37,9 +42,21 @@ export default function Question({ number, question, updateQuestion, removeQuest
 
   const renderArtefactUpload = () => {
     const count = question.feedbackType === "comparison" ? 2 : 1;
+    const showUpload =
+      question.feedbackType === "comparison" ||
+      question.feedbackType.includes("slider") ||
+      question.feedbackType === "multiple-choice";
+  
     return (
-      <div className="fileUploadWrapper">
-        <label htmlFor={`fileUpload-${number}`} className="fileUploadLabel">
+      <div
+        className="fileUploadWrapper"
+        style={{ visibility: showUpload ? "visible" : "hidden" }}
+      >
+        <label
+          htmlFor={`fileUpload-${number}`}
+          className="fileUploadLabel"
+          style={{ pointerEvents: showUpload ? "auto" : "none", opacity: showUpload ? 1 : 0 }}
+        >
           Upload {count > 1 ? `${count} Artefacts` : "Artefact"}
         </label>
         <input
@@ -49,8 +66,9 @@ export default function Question({ number, question, updateQuestion, removeQuest
           accept="image/*"
           multiple={count > 1}
           onChange={handleFileChange}
+          disabled={!showUpload}
         />
-        {question.artefacts && question.artefacts.length > 0 && (
+        {showUpload && question.artefacts?.length > 0 && (
           <ul className="filePreviewList">
             {question.artefacts.map((a, i) => (
               <li key={i} className="filePreviewItem">
@@ -62,13 +80,18 @@ export default function Question({ number, question, updateQuestion, removeQuest
       </div>
     );
   };
+  
 
   return (
     <div className="QuestionWrapper">
       <div className="QuestionToolBar">
         <span>Question {number}</span>
         <button className="RemoveQuestionButton" onClick={removeQuestion}>
-          <img src="/trash-delete-white-icon.png" alt="Remove" className="trashIcon" />
+          <img
+            src="/trash-delete-white-icon.png"
+            alt="Remove"
+            className="trashIcon"
+          />
         </button>
       </div>
       <div className="QuestionBar">
@@ -93,12 +116,7 @@ export default function Question({ number, question, updateQuestion, removeQuest
           <option value="comparison">Comparison</option>
         </select>
 
-        <div className="artefactSlot">
-          {(question.feedbackType === "comparison" ||
-            question.feedbackType.includes("slider") ||
-            question.feedbackType === "multiple-choice") &&
-            renderArtefactUpload()}
-        </div>
+        <div className="artefactSlot">{renderArtefactUpload()}</div>
       </div>
     </div>
   );
