@@ -12,10 +12,6 @@ const studySchema = new mongoose.Schema({
   status: String,
   startDate: String,
   endDate: String,
-  const questionSchema = new mongoose.Schema({
-    questionText: String,
-    feedbackType: String
-  }, { _id: true }); 
   createdAt: { type: Date, default: Date.now }
 });
 
