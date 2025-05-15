@@ -29,25 +29,35 @@ export default function EditStudyForm() {
         const artefactRes = await fetch(`/api/artefacts?study=${id}`);
         const artefactData = await artefactRes.json();
 
-        const studyQuestions = studyData.study.questions || [];
-        const artefacts = artefactData.artefacts || [];
+        const studyQuestions =
+        studyData.study.questions?.length > 0
+          ? studyData.study.questions
+          : [
+              { questionText: "", feedbackType: "", artefacts: [] },
+              { questionText: "", feedbackType: "", artefacts: [] },
+              { questionText: "", feedbackType: "", artefacts: [] },
+              { questionText: "", feedbackType: "", artefacts: [] },
+              { questionText: "", feedbackType: "", artefacts: [] },
+            ];
+              const artefacts = artefactData.artefacts || [];
 
-        const groupedQuestions = studyQuestions.map((q) => {
-            const matchingArtefacts = artefacts
-              .filter((a) => String(a.question) === String(q._id))
-              .map((a) => ({
-                url: a.fileUrl,
-                file: { name: a.fileUrl.split("/").pop() }
-              }));
+              const groupedQuestions = studyQuestions.map((q) => {
+                const matchingArtefacts = artefacts
+                  .filter((a) => a.title === q.questionText)
+                  .map((a) => ({
+                    url: a.fileUrl,
+                    file: { name: a.fileUrl.split("/").pop() }
+                  }));
+              
+                return {
+                  questionText: q.questionText || "",
+                  feedbackType: q.feedbackType || "",
+                  artefacts: matchingArtefacts,
+                };
+              });
+              
           
-            return {
-              _id: q._id, 
-              questionText: q.questionText,
-              feedbackType: q.feedbackType,
-              artefacts: matchingArtefacts,
-            };
-          });
-          
+
 
         setStudy(studyData.study);
         setTitle(studyData.study.title);
@@ -111,10 +121,12 @@ const handleSubmit = async (status) => {
     endDate,
     researcher: study.researcher,
     status,
-    questions: questions.map((q) => ({
-      questionText: q.questionText,
-      feedbackType: q.feedbackType,
-    })),
+    questions: questions.map(q => ({
+        questionText: q.questionText,
+        feedbackType: q.feedbackType,
+        artefacts: q.artefacts
+      }))
+      
   };
 
   try {

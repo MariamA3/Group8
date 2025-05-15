@@ -119,9 +119,10 @@ export default function StudyForm({
         endDate,
         status,
         questions: questions.map(q => ({
-          questionText: q.questionText,
-          feedbackType: q.feedbackType
-        }))
+            questionText: q.questionText,
+            feedbackType: q.feedbackType,
+            artefacts: q.artefacts
+          }))
       };
       
 
@@ -154,7 +155,8 @@ export default function StudyForm({
 
           const artefactData = {
             study: studyId,
-            researcher: researcherId,
+            researcher: study.researcher,
+            question: match._id,             
             title: q.questionText,
             description: "Artefact for question",
             fileUrl: artefact.url,

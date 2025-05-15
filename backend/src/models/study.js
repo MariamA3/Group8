@@ -2,7 +2,15 @@ const mongoose = require("mongoose");
 
 const questionSchema = new mongoose.Schema({
   questionText: String,
-  feedbackType: String
+  feedbackType: String,
+  artefacts: [
+    {
+      url: String,
+      file: {
+        name: String,
+      },
+    },
+  ],
 });
 
 const studySchema = new mongoose.Schema({
@@ -12,7 +20,8 @@ const studySchema = new mongoose.Schema({
   status: String,
   startDate: String,
   endDate: String,
-  createdAt: { type: Date, default: Date.now }
+  questions: [questionSchema], 
+  createdAt: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("Study", studySchema);
