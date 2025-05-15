@@ -33,17 +33,21 @@ export default function EditStudyForm() {
         const artefacts = artefactData.artefacts || [];
 
         const groupedQuestions = studyQuestions.map((q) => {
-          const matchingArtefacts = artefacts
-            .filter((a) => String(a.question) === String(q._id))
-            .map((a) => ({ url: a.fileUrl }));
-
-          return {
-            _id: q._id,
-            questionText: q.questionText,
-            feedbackType: q.feedbackType,
-            artefacts: matchingArtefacts,
-          };
-        });
+            const matchingArtefacts = artefacts
+              .filter((a) => String(a.question) === String(q._id))
+              .map((a) => ({
+                url: a.fileUrl,
+                file: { name: a.fileUrl.split("/").pop() }
+              }));
+          
+            return {
+              _id: q._id, 
+              questionText: q.questionText,
+              feedbackType: q.feedbackType,
+              artefacts: matchingArtefacts,
+            };
+          });
+          
 
         setStudy(studyData.study);
         setTitle(studyData.study.title);
@@ -91,80 +95,97 @@ export default function EditStudyForm() {
     return true;
   };
 
-  const handleSubmit = async (status) => {
-    if (!validateForm()) return;
-    setLoading(true);
+const handleSubmit = async (status) => {
+  const isValid = validateForm();
+  if (!isValid) {
+    console.warn("❌ Validation failed — submission aborted.");
+    return;
+  }
 
-    const updatedStudy = {
-      title,
-      description,
-      startDate,
-      endDate,
-      researcher: study.researcher,
-      status,
-      questions: questions.map((q) => ({
-        questionText: q.questionText,
-        feedbackType: q.feedbackType,
-      })),
-    };
+  setLoading(true);
 
-    try {
-      const res = await fetch(`/api/studies/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedStudy),
-      });
-
-      const result = await res.json();
-      if (!res.ok) throw new Error(result.message || "Failed to update study");
-
-      const savedQuestions = result.questions || study.questions;
-
-      for (const q of questions) {
-        const match = savedQuestions.find(
-          (sq) => sq.questionText === q.questionText && sq.feedbackType === q.feedbackType
-        );
-        if (!match) continue;
-
-        for (const artefact of q.artefacts) {
-          if (!artefact.file) continue;
-
-          const formData = new FormData();
-          formData.append("file", artefact.file);
-
-          const uploadRes = await fetch("/api/upload", {
-            method: "POST",
-            body: formData,
-          });
-
-          const uploadJson = await uploadRes.json();
-          if (!uploadRes.ok) throw new Error(uploadJson.message || "Upload failed");
-
-          const artefactData = {
-            study: id,
-            researcher: study.researcher,
-            question: match._id,
-            title: q.questionText,
-            description: "Artefact for question",
-            fileUrl: uploadJson.fileUrl,
-          };
-
-          await fetch("/api/artefacts", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(artefactData),
-          });
-        }
-      }
-
-      toast.success(`Study ${status === "active" ? "published" : "saved"}!`);
-      navigate("/dashboard");
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setLoading(false);
-    }
+  const updatedStudy = {
+    title,
+    description,
+    startDate,
+    endDate,
+    researcher: study.researcher,
+    status,
+    questions: questions.map((q) => ({
+      questionText: q.questionText,
+      feedbackType: q.feedbackType,
+    })),
   };
+
+  try {
+    const res = await fetch(`/api/studies/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedStudy),
+    });
+
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.message || "Failed to update study");
+
+    const savedQuestions = result.questions || study.questions;
+
+    await fetch(`/api/artefacts?study=${id}`, { method: "DELETE" });
+
+    let totalUploads = 0;
+
+    for (const q of questions) {
+      const match = savedQuestions.find(
+        (sq) => sq.questionText === q.questionText && sq.feedbackType === q.feedbackType
+      );
+      if (!match) continue;
+
+      const expectedCount = q.feedbackType === "comparison" ? 2 : 1;
+      const artefactsToUpload = q.artefacts.filter((a) => a.file).slice(0, expectedCount);
+
+      for (const artefact of artefactsToUpload) {
+        const formData = new FormData();
+        formData.append("file", artefact.file);
+
+        const uploadRes = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const uploadJson = await uploadRes.json();
+        if (!uploadRes.ok) throw new Error(uploadJson.message || "Upload failed");
+
+        const artefactData = {
+          study: id,
+          researcher: study.researcher,
+          question: match._id,
+          title: q.questionText,
+          description: "Artefact for question",
+          fileUrl: uploadJson.fileUrl,
+        };
+
+        await fetch("/api/artefacts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(artefactData),
+        });
+
+        totalUploads++;
+      }
+    }
+
+    if (totalUploads > 0) {
+      toast.success(`Uploaded ${totalUploads} artefact${totalUploads > 1 ? "s" : ""}`);
+    }
+
+    toast.success(`Study ${status === "active" ? "published" : "saved"}!`);
+    navigate("/dashboard");
+  } catch (err) {
+    toast.error(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   if (loading) return <p>Loading...</p>;
   if (!study) return <p>Study not found</p>;
