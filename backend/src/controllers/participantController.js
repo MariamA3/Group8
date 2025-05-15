@@ -13,19 +13,16 @@ const deleteParticipant = (req, res) => deleteModel(Participant, req, res, 'Part
 //
 //create
 const createAParticipant = async (req, res) => {
-   try{
-    const { _id } = req.body; 
-    const newParticipant = new Participant ({
-        _id
-    }); 
-    const savedParticipant = await newParticipant.save(); 
+  try {
+    const newParticipant = new Participant(); 
+    const savedParticipant = await newParticipant.save();
 
-    res.status(201).json({savedParticipant}); 
+    res.status(201).json(savedParticipant); 
+  } catch (error) {
+    res.status(500).json({ message: `Error creating Participant: ${error.message}` });
+  }
+};
 
-   } catch (error){
-    res.status(500).json({mesage: `Error creating Participant: ${error.message}`}); 
-   }
-}
 
 //not needed only for fixing and debugging backend !!Remove!!!
 const updateParticipant = async(req, res) => {

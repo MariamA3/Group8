@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 });
 
 // Add routes
-const routes = ['artefactRoutes', 'studyRoutes', 'invitationRoutes'];
+const routes = ['artefactRoutes', 'studyRoutes', 'invitationRoutes', 'participantRoutes'];
 routes.forEach(route => {
     app.use('/api', require(`./routes/${route}`));
 });

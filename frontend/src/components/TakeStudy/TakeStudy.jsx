@@ -1,26 +1,48 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import ParticipantNav from './ParticipantNav';
 
+///no styles yet
 export default function TakeStudy() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [study, setStudy] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [responses, setResponses] = useState({});
+  const [participantId, setParticipantId] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     const fetchStudy = async () => {
-      const res = await fetch(`/api/studies/${id}`);
+      const res = await fetch(`http://localhost:8080/api/studies/${id}`);
       const data = await res.json();
       setStudy(data.study);
     };
 
     fetchStudy();
+
+    const existingId = sessionStorage.getItem("participantId");
+    if (existingId) {
+      setParticipantId(existingId);
+    } else {
+      const createParticipant = async () => {
+        const res = await fetch("http://localhost:8080/api/participants", {
+          method: "POST",
+        });
+        const data = await res.json();
+        sessionStorage.setItem("participantId", data._id);
+        setParticipantId(data._id);
+      };
+
+      createParticipant();
+    }
   }, [id]);
 
   const handleAnswer = (value) => {
+    if (!study || !study.questions || !study.questions[currentIndex]) {
+      return;
+    }
+
     const question = study.questions[currentIndex];
     setResponses((prev) => ({
       ...prev,
@@ -36,10 +58,11 @@ export default function TakeStudy() {
     setSubmitting(true);
     const payload = {
       studyId: study._id,
+      participantId,
       answers: Object.values(responses),
     };
 
-    const res = await fetch("/api/responses", {
+    const res = await fetch("http://localhost:8080/api/responses", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -48,20 +71,24 @@ export default function TakeStudy() {
     if (res.ok) {
       setSubmitted(true);
     }
-
     setSubmitting(false);
   };
 
-  if (!study) return <p>Loading...</p>;
-  if (submitted) return <p>Thank you for your responses!</p>;
+  if (!study || !study.questions || !study.questions[currentIndex]) {
+    return <p>Loading study...</p>;
+  }
 
   const question = study.questions[currentIndex];
   const answer = responses[currentIndex]?.answer || "";
 
   return (
     <div className="take-study-page">
-      <h1>{study.title}</h1>
-      <p>{study.description}</p>
+      <ParticipantNav participantId={participantId} />
+
+      <div style={{ textAlign: "center" }}>
+        <h1>{study.title}</h1>
+        <p>{study.description}</p>
+      </div>
 
       <div className="question-block">
         <h2>{question.questionText}</h2>
@@ -75,7 +102,6 @@ export default function TakeStudy() {
           />
         ))}
 
-        {/* Input based on feedbackType */}
         {(() => {
           switch (question.feedbackType) {
             case "text-field":

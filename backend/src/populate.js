@@ -25,30 +25,26 @@ async function seed() {
       ]);
 
     // create a researcher
-    const researcher = await Researcher.create({
-      name: "Dr. Said ",
-      email: "mariam@example.com",
-      passwordHash: "testings", 
-    });
+    const researcherId = "6824a97710175a3a9e9bb9f4";
 
     const studies = [];
 
     for (let i = 1; i <= 2; i++) {
-      const study = await Study.create({
-        researcher: researcher._id,
-        title: `AI vs Human Study ${i}`,
-        description: `A study to evaluate human perception of AI vs human-generated content (Phase ${i}).`,
-        status: "active",
-        startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-        endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      });
+        const study = await Study.create({
+            researcher: researcherId,
+            title: `AI vs Human Study ${i}`,
+            description: `A study to evaluate human perception of AI vs human-generated content (Phase ${i}).`,
+            status: "active",
+            startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+            endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          });
 
       studies.push(study);
 
       for (let j = 1; j <= 2; j++) {
         const artefact = await Artefact.create({
           study: study._id,
-          researcher: researcher._id,
+          researcher: researcherId,
           title: `Artefact ${j} (Study ${i})`,
           description: "Generated artefact for testing perception.",
           fileUrl: `https://picsum.photos/200/300`,
