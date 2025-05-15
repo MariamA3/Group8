@@ -2,18 +2,16 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import trashIcon from "/delete.png";
 import { toast } from "react-hot-toast";
-import "./Dashboard.css"; // create this for styling
+import "./Dashboard.css";
 import DeletionConfirmationMessage from "../sharedComponents/DeletionConfirmationMessage";
 
 export default function Dashboard() {
   const [studies, setStudies] = useState([]);
-  const [filter, setFilter] = useState("all");
   const [showConfirm, setShowConfirm] = useState(false);
   const [studyToDelete, setStudyToDelete] = useState(null);
 
   const navigate = useNavigate();
 
-  // replace with auth later
   const researcherId = "6824a97710175a3a9e9bb9f4";
 
   useEffect(() => {
@@ -22,7 +20,6 @@ export default function Dashboard() {
         const res = await fetch("/api/studies");
         const data = await res.json();
         const allStudies = data.studies || data.study || [];
-        console.log(allStudies);
         const myStudies = allStudies.filter(
           (study) => study.researcher === researcherId
         );
@@ -37,13 +34,13 @@ export default function Dashboard() {
 
   const confirmDelete = async () => {
     try {
-      const res = await fetch(`/api/studies/${studyToDelete}`, {
+      const res = await fetch(`/api/studies/${studyToDelete._id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to delete study");
 
-      setStudies((prev) => prev.filter((s) => s._id !== studyToDelete));
-      toast.success("Study deleted successfully");
+      setStudies((prev) => prev.filter((s) => s._id !== studyToDelete._id));
+      toast.success(`Study "${studyToDelete.title}" deleted successfully`);
     } catch (err) {
       toast.error("Delete failed: " + err.message);
     } finally {
@@ -81,8 +78,9 @@ export default function Dashboard() {
         <p className="emptyState">You haven’t created any studies yet.</p>
       )}
 
-      {showConfirm && (
+      {showConfirm && studyToDelete && (
         <DeletionConfirmationMessage
+          studyName={studyToDelete.title} // Pass the study name
           onConfirm={confirmDelete}
           onCancel={() => {
             setShowConfirm(false);
@@ -135,7 +133,7 @@ export default function Dashboard() {
                   className="deleteStudyBtn"
                   onClick={() => {
                     setShowConfirm(true);
-                    setStudyToDelete(study._id);
+                    setStudyToDelete(study); // Store the entire study object
                   }}
                 >
                   <img src={trashIcon} alt="Delete" className="trashIcon" />

@@ -1,11 +1,11 @@
 import './DeletionConirmationMessage.css'
 
-export default function DeletionConfirmationMessage({ onConfirm, onCancel }) {
-  return (
+export default function DeletionConfirmationMessage({ studyName, onConfirm, onCancel }) {
+    return (
     <div className="deletionOverlay">
       <div className="deletionBox">
         <p className="deletionText">
-          Are you sure you want to delete this study?<br />
+        Are you sure you want to delete the study "{studyName}"?<br />
           <strong>This action cannot be undone.</strong>
         </p>
         <div className="deletionButtons">

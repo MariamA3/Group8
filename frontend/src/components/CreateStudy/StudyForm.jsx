@@ -53,16 +53,19 @@ export default function StudyForm({
   // LocalStorage syncing (only in create mode)
   useEffect(() => {
     if (mode === "edit") return;
-
+  
     const interval = setInterval(() => {
       localStorage.setItem("draft-title", title);
       localStorage.setItem("draft-description", description);
       localStorage.setItem("draft-startDate", startDate);
       localStorage.setItem("draft-endDate", endDate);
-    }, 15000);
-
+      localStorage.setItem("draft-questions", JSON.stringify(questions));
+      toast.success("Draft saved", { duration: 1500, id: "autosave-toast" });
+    }, 10000);
+  
     return () => clearInterval(interval);
-  }, [title, description, startDate, endDate, mode]);
+  }, [title, description, startDate, endDate, questions, mode]);
+  
 
   useEffect(() => {
     if (mode === "edit") return;
