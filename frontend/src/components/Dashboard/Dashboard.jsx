@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import trashIcon from "/delete.png";
+import { toast } from "react-hot-toast";
 import "./Dashboard.css"; // create this for styling
+import DeletionConfirmationMessage from "../sharedComponents/DeletionConfirmationMessage";
 
 export default function Dashboard() {
   const [studies, setStudies] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [studyToDelete, setStudyToDelete] = useState(null);
 
   const navigate = useNavigate();
 
@@ -30,12 +35,22 @@ export default function Dashboard() {
     fetchStudies();
   }, []);
 
-  const formatDate = (dateString) =>
-    new Date(dateString).toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
+  const confirmDelete = async () => {
+    try {
+      const res = await fetch(`/api/studies/${studyToDelete}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete study");
+
+      setStudies((prev) => prev.filter((s) => s._id !== studyToDelete));
+      toast.success("Study deleted successfully");
+    } catch (err) {
+      toast.error("Delete failed: " + err.message);
+    } finally {
+      setShowConfirm(false);
+      setStudyToDelete(null);
+    }
+  };
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -65,22 +80,32 @@ export default function Dashboard() {
       {studies.length === 0 && (
         <p className="emptyState">You haven’t created any studies yet.</p>
       )}
+
+      {showConfirm && (
+        <DeletionConfirmationMessage
+          onConfirm={confirmDelete}
+          onCancel={() => {
+            setShowConfirm(false);
+            setStudyToDelete(null);
+          }}
+        />
+      )}
+
       <table className="dashboardTable">
         <thead>
           <tr>
             <th>Study</th>
-            <th>Created</th>
             <th>Respondents</th>
             <th>Results</th>
             <th>Edit</th>
             <th>Status</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
           {studies.map((study) => (
             <tr key={study._id}>
               <td>{study.title}</td>
-              <td>{study.createdAt ? formatDate(study.createdAt) : "—"}</td>
               <td>{Math.floor(Math.random() * 10)}</td>
               <td>
                 <span
@@ -104,6 +129,17 @@ export default function Dashboard() {
                 <span className={getStatusClass(study.status)}>
                   {study.status}
                 </span>
+              </td>
+              <td>
+                <button
+                  className="deleteStudyBtn"
+                  onClick={() => {
+                    setShowConfirm(true);
+                    setStudyToDelete(study._id);
+                  }}
+                >
+                  <img src={trashIcon} alt="Delete" className="trashIcon" />
+                </button>
               </td>
             </tr>
           ))}
