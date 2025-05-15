@@ -27,6 +27,7 @@ const routes = ['artefactRoutes', 'studyRoutes', 'invitationRoutes'];
 routes.forEach(route => {
     app.use('/api', require(`./routes/${route}`));
 });
+app.use('/api/responses', require('./routes/responseRoutes'));
 
 // Serve static files from the "uploads" directory
 app.use("/uploads", express.static("uploads")); // Serve static files

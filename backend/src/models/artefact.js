@@ -11,8 +11,12 @@ const ArtefactSchema = new mongoose.Schema({
         type: String, 
         required: true,
         // Restricts allowed file types
-        match: /\.(jpg|jpeg|png|gif|mp4|mov|avi|mp3|wav|ogg)$/i, 
-    },
+        validate: {
+            validator: function (v) {
+              return /^https?:\/\/|^\/?upload\//.test(v); // Allow URLs and local paths
+            },
+            message: props => `${props.value} is not a valid file URL`
+          }    },
     createdAt: { type: Date, default: Date.now },
 });
 
