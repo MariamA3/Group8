@@ -12,7 +12,10 @@ const studySchema = new mongoose.Schema({
   status: String,
   startDate: String,
   endDate: String,
-  questions: [questionSchema],
+  const questionSchema = new mongoose.Schema({
+    questionText: String,
+    feedbackType: String
+  }, { _id: true }); 
   createdAt: { type: Date, default: Date.now }
 });
 
