@@ -102,3 +102,13 @@
     object-fit: contain;
     background: transparent;
   }
+
+  .copyLinkIcon {
+    width: 20px;
+    height: 20px;
+   
+  }
+  
+  .copyLinkIcon:hover {
+    transform: scale(1.1);
+  }

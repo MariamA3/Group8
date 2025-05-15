@@ -88,7 +88,7 @@ export default function Dashboard() {
 
       {showConfirm && studyToDelete && (
         <DeletionConfirmationMessage
-          studyName={studyToDelete.title} // Pass the study name
+          studyName={studyToDelete.title}
           onConfirm={confirmDelete}
           onCancel={() => {
             setShowConfirm(false);
@@ -106,6 +106,7 @@ export default function Dashboard() {
             <th>Edit</th>
             <th>Status</th>
             <th>Delete</th>
+            <th>Share</th>
           </tr>
         </thead>
         <tbody>
@@ -141,11 +142,28 @@ export default function Dashboard() {
                   className="deleteStudyBtn"
                   onClick={() => {
                     setShowConfirm(true);
-                    setStudyToDelete(study); // Store the entire study object
+                    setStudyToDelete(study);
                   }}
                 >
                   <img src={trashIcon} alt="Delete" className="trashIcon" />
                 </button>
+              </td>
+              <td>
+                {study.status === "active" && (
+                  <img
+                    src="/copy-link.png"
+                    alt="Copy link"
+                    className="copyLinkIcon"
+                    onClick={() =>
+                      navigator.clipboard
+                        .writeText(
+                          `${window.location.origin}/study/${study._id}`
+                        )
+                        .then(() => toast.success("Link copied to clipboard"))
+                        .catch(() => toast.error("Failed to copy link"))
+                    }
+                  />
+                )}
               </td>
             </tr>
           ))}
