@@ -4,6 +4,7 @@ const ArtefactSchema = new mongoose.Schema({
     study: { type: mongoose.Schema.Types.ObjectId, ref: "Study", required: true },
     //adding researcher id so we can filter the data later based on researcher
     researcher: { type: mongoose.Schema.Types.ObjectId, ref: "Researcher", required: true }, 
+    question: { type: mongoose.Schema.Types.ObjectId, ref: "Study.questions" },
     title: { type: String, required: true },
     description: { type: String },
     fileUrl: { 
