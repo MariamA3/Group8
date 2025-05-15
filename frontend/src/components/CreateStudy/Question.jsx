@@ -39,53 +39,53 @@ export default function Question({
 
     updateQuestion({ ...question, artefacts: uploadedArtefacts });
   };
-
+  
   const renderArtefactUpload = () => {
-    const count = question.feedbackType === "comparison" ? 2 : 1;
     const showUpload =
       question.feedbackType === "comparison" ||
       question.feedbackType.includes("slider") ||
       question.feedbackType === "multiple-choice";
-
+  
     return (
-      <div
-        className="fileUploadWrapper"
-        style={{
-          opacity: showUpload ? 1 : 0,
-          pointerEvents: showUpload ? "auto" : "none",
-        }}
-      >
+      <div className="artefactSlot">
+        <div
+          className="fileNamesWrapper"
+          style={{
+            opacity: showUpload ? 1 : 0,
+            pointerEvents: showUpload ? "auto" : "none",
+          }}
+        >
+          {question.artefacts.map((a, i) => (
+            <span key={i} className="fileNameTag">
+              {(a.file?.name || a.url)?.slice(0, 12)}
+            </span>
+          ))}
+        </div>
+  
         <label
           htmlFor={`fileUpload-${number}`}
           className="fileUploadLabel"
           style={{
-            pointerEvents: showUpload ? "auto" : "none",
             opacity: showUpload ? 1 : 0,
+            pointerEvents: showUpload ? "auto" : "none",
           }}
         >
-          Upload {count > 1 ? `${count} Artefacts` : "Artefact"}
+          Upload
         </label>
         <input
           type="file"
           id={`fileUpload-${number}`}
           className="fileUploadInput"
           accept="image/*"
-          multiple={count > 1}
+          multiple={question.feedbackType === "comparison"}
           onChange={handleFileChange}
-          disabled={!showUpload}
         />
-        {showUpload && question.artefacts?.length > 0 && (
-          <ul className="filePreviewList">
-            {question.artefacts.map((a, i) => (
-              <li key={i} className="filePreviewItem">
-                {a.file?.name || `Artefact ${i + 1}`}
-              </li>
-            ))}
-          </ul>
-        )}
       </div>
     );
   };
+  
+  
+  
 
   return (
     <div className="QuestionWrapper">
@@ -121,7 +121,27 @@ export default function Question({
           <option value="comparison">Comparison</option>
         </select>
 
-        <div className="artefactSlot">{renderArtefactUpload()}</div>
+        <div className="artefactSlot">
+  <div className="fileNamesWrapper">
+    {question.artefacts?.map((a, i) => (
+      <span key={i} className="fileNameTag">
+        {(a.file?.name || a.url)?.slice(0, 12)}
+      </span>
+    ))}
+  </div>
+
+  <label htmlFor={`fileUpload-${number}`} className="fileUploadLabel">
+    Upload {question.feedbackType === "comparison" ? "2 Artefacts" : "Artefact"}
+  </label>
+  <input
+    type="file"
+    id={`fileUpload-${number}`}
+    className="fileUploadInput"
+    accept="image/*"
+    multiple={question.feedbackType === "comparison"}
+    onChange={handleFileChange}
+  />
+</div>
       </div>
     </div>
   );

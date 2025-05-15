@@ -24,30 +24,21 @@ export default function EditStudyForm() {
       try {
         const studyRes = await fetch(`/api/studies/${id}`);
         const studyData = await studyRes.json();
-
         if (!studyRes.ok) throw new Error("Study not found");
 
         const artefactRes = await fetch(`/api/artefacts?study=${id}`);
         const artefactData = await artefactRes.json();
 
-        const studyQuestions =
-          studyData.study.questions?.length > 0
-            ? studyData.study.questions
-            : [
-                { questionText: "", feedbackType: "" },
-                { questionText: "", feedbackType: "" },
-                { questionText: "", feedbackType: "" },
-                { questionText: "", feedbackType: "" },
-                { questionText: "", feedbackType: "" },
-              ];
+        const studyQuestions = studyData.study.questions || [];
         const artefacts = artefactData.artefacts || [];
 
         const groupedQuestions = studyQuestions.map((q) => {
           const matchingArtefacts = artefacts
-            .filter((a) => a.title === q.questionText)
+            .filter((a) => String(a.question) === String(q._id))
             .map((a) => ({ url: a.fileUrl }));
 
           return {
+            _id: q._id,
             questionText: q.questionText,
             feedbackType: q.feedbackType,
             artefacts: matchingArtefacts,
@@ -75,17 +66,14 @@ export default function EditStudyForm() {
       toast.error("Study title is required.");
       return false;
     }
-
     if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
       toast.error("End date must be after start date.");
       return false;
     }
-
     if (questions.length === 0) {
       toast.error("You must add at least one question.");
       return false;
     }
-
     const hasValidQuestion = questions.some((q) => {
       if (!q.questionText.trim() || !q.feedbackType) return false;
       if (
@@ -96,18 +84,15 @@ export default function EditStudyForm() {
       }
       return true;
     });
-
     if (!hasValidQuestion) {
       toast.error("At least one complete question with artefact is required.");
       return false;
     }
-
     return true;
   };
 
   const handleSubmit = async (status) => {
     if (!validateForm()) return;
-
     setLoading(true);
 
     const updatedStudy = {
@@ -133,16 +118,35 @@ export default function EditStudyForm() {
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || "Failed to update study");
 
+      const savedQuestions = result.questions || study.questions;
+
       for (const q of questions) {
+        const match = savedQuestions.find(
+          (sq) => sq.questionText === q.questionText && sq.feedbackType === q.feedbackType
+        );
+        if (!match) continue;
+
         for (const artefact of q.artefacts) {
-          if (!artefact.url) continue;
+          if (!artefact.file) continue;
+
+          const formData = new FormData();
+          formData.append("file", artefact.file);
+
+          const uploadRes = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          const uploadJson = await uploadRes.json();
+          if (!uploadRes.ok) throw new Error(uploadJson.message || "Upload failed");
 
           const artefactData = {
             study: id,
             researcher: study.researcher,
+            question: match._id,
             title: q.questionText,
             description: "Artefact for question",
-            fileUrl: artefact.url,
+            fileUrl: uploadJson.fileUrl,
           };
 
           await fetch("/api/artefacts", {
