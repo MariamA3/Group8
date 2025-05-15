@@ -67,15 +67,6 @@ export default function StudyForm({
   }, [title, description, startDate, endDate, questions, mode]);
   
 
-  useEffect(() => {
-    if (mode === "edit") return;
-
-    const interval = setInterval(() => {
-      localStorage.setItem("draft-questions", JSON.stringify(questions));
-    }, 15000);
-
-    return () => clearInterval(interval);
-  }, [questions, mode]);
 
   const validateForm = () => {
     if (!title.trim()) {

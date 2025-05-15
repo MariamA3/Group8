@@ -68,7 +68,15 @@ export default function Dashboard() {
         <h1>Dashboard</h1>
         <button
           className="createButton"
-          onClick={() => navigate("/create-study")}
+          onClick={() => {
+            // clear old draft on purpose before navigating
+            localStorage.removeItem("draft-title");
+            localStorage.removeItem("draft-description");
+            localStorage.removeItem("draft-startDate");
+            localStorage.removeItem("draft-endDate");
+            localStorage.removeItem("draft-questions");
+            navigate("/create-study");
+          }}
         >
           Create Study
         </button>
