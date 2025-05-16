@@ -1,21 +1,32 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
-const User = require('../models/User'); // Adjust as needed
+const User = require('../models/researcher'); // Adjust as needed.
 const JWT_SECRET = process.env.JWT_SECRET || 'yourSecretKey';
 
-// Register a new user
+// Register a new researcher (authenticated user).
 exports.registerUser = async (req, res) => {
+  const { name, email, password } = req.body;
+
   try {
-    const { username, password } = req.body;
+    const exists = await Researcher.findOne({ email });
+    if (exists) return res.status(400).json({ message: 'Email already registered.' });
 
-    const exists = await User.findOne({ username });
-    if (exists) return res.status(400).json({ message: 'User already exists' });
+    const passwordHash = await bcrypt.hash(password, 10);
+    const user = await Researcher.create({ name, email, passwordHash });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({ username, password: hashedPassword });
+    // Optional: auto-login after register
+    const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, {
+      expiresIn: '1d',
+    });
 
-    res.status(201).json({ message: 'User created' });
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res.status(201).json({ message: 'Registration successful.' });
   } catch (err) {
     res.status(500).json({ message: 'Registration failed', error: err.message });
   }
@@ -47,4 +58,14 @@ exports.loginUser = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Login failed', error: err.message });
   }
+};
+
+// Logout current user.
+exports.logoutUser = (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Strict',
+  });
+  res.json({ message: 'Logged out successfully' });
 };

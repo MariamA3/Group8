@@ -6,7 +6,8 @@ const router = express.Router();
 // Debugging: Log the imported authController object
 console.log("authController:", authController);
 
+router.post('/register', authController.registerUser);
 router.post("/login", authController.loginUser);
-router.post("/register", authController.registerUser);
+router.post("/logout", authController.logoutUser);
 
 module.exports = router;

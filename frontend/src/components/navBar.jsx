@@ -38,7 +38,7 @@ function Navbar() {
               className="nav-link"
               onClick={(e) => {
                 // Allow navigation but also handle logout
-                logout();
+                handleLogout();
               }}
             >
               Log out

@@ -57,6 +57,7 @@ const AppRoutes = () => {
           <LoginPage />
         </PublicRoute>
       } />
+
       <Route path="/register" element={
         <PublicRoute>
           <RegisterPage />
@@ -78,7 +79,7 @@ const AppRoutes = () => {
         </PublicRoute>
       } />
 
-<Route path="/study/:id" element={
+      <Route path="/study/:id" element={
         //made public for the presentation
         <PublicRoute>
           <TakeStudy/>
