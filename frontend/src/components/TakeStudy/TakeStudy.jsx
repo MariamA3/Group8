@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import ParticipantNav from './ParticipantNav';
 
 ///no styles yet
 export default function TakeStudy() {
@@ -83,7 +82,6 @@ export default function TakeStudy() {
 
   return (
     <div className="take-study-page">
-      <ParticipantNav participantId={participantId} />
 
       <div style={{ textAlign: "center" }}>
         <h1>{study.title}</h1>

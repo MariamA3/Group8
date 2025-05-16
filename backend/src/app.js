@@ -9,6 +9,10 @@ const PORT = process.env.PORT || 8080;
 
 // Middleware
 app.use(express.json());
+
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
 app.use(cors());
 
 // Load environment variables from .env file
@@ -22,7 +26,7 @@ app.get("/", (req, res) => {
     res.send("Server is running!");
 });
 
-// Add routes
+// Routes
 const routes = ['artefactRoutes', 'studyRoutes', 'invitationRoutes', 'participantRoutes'];
 routes.forEach(route => {
     app.use('/api', require(`./routes/${route}`));
@@ -35,6 +39,10 @@ app.use("/uploads", express.static("uploads")); // Serve static files
 // Connect upload route
 const uploadRoutes = require("./routes/uploadRoutes");
 app.use("/api/upload", uploadRoutes); // Connect the route
+
+app.get('/api/me', require('./middleware/authMiddleware'), (req, res) => {
+  res.json({ user: req.user });
+});
 
 // Serving the frontend build files
 app.use(express.static(path.join(__dirname, 'frontend/dist')));

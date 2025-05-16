@@ -12,25 +12,44 @@ function LoginPage() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setIsLoading(true);
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError('');
+  //   setIsLoading(true);
     
-    try {
-      const result = await login(email, password);
+  //   try {
+  //     const result = await login(email, password);
       
-      if (result.success) {
-        // Redirect to dashboard on successful login
-        navigate('/dashboard');
-      } else {
-        setError(result.error || 'Invalid login credentials');
-      }
-    } catch (err) {
-      setError('An error occurred during login');
-      console.error(err);
-    } finally {
-      setIsLoading(false);
+  //     if (result.success) {
+  //       // Redirect to dashboard on successful login
+  //       navigate('/dashboard');
+  //     } else {
+  //       setError(result.error || 'Invalid login credentials');
+  //     }
+  //   } catch (err) {
+  //     setError('An error occurred during login');
+  //     console.error(err);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const loginUser = async (credentials) => {
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      credentials: 'include', // For sending cookies.
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      isLoggedIn = true
+      navigate('/dashboard');
+    } else {
+      throw new Error(data.message);
     }
   };
 
@@ -42,7 +61,7 @@ function LoginPage() {
           <p className="signin-subheading">Sign in to your account</p>
         </div>
         
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={loginUser}>
           <div className="form-group">
             <label htmlFor="email" className="form-label">Email</label>
             <input 
