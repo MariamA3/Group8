@@ -23,10 +23,11 @@ app.get("/", (req, res) => {
 });
 
 // Add routes
-const routes = ['artefactRoutes', 'studyRoutes', 'invitationRoutes'];
+const routes = ['artefactRoutes', 'studyRoutes', 'invitationRoutes', 'participantRoutes'];
 routes.forEach(route => {
     app.use('/api', require(`./routes/${route}`));
 });
+app.use('/api/responses', require('./routes/responseRoutes'));
 
 // Serve static files from the "uploads" directory
 app.use("/uploads", express.static("uploads")); // Serve static files

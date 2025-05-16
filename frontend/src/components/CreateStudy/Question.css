@@ -26,15 +26,17 @@
     font-weight: bold;
     margin: 0; 
 }
+
 .QuestionBar {
-    display: flex;
+    display: grid;
+    grid-template-columns: 40% 20% auto; /* ✅ precise column widths */
     align-items: center;
-    justify-content: space-between;
+    gap: 2rem; 
     padding: 1rem;
     background-color: white;
-    margin: 0; /
-}
-
+  }
+  
+  
 
 input[name="question"] {
     border: none;
@@ -50,43 +52,57 @@ input[name="question"]:focus {
     box-shadow: none; 
 }
 
-select[name='feedbackType']{
-    border: none;
-    background-color: white ;
+select[name='feedbackType'] {
+  width: 100%;
+  max-width: 8rem;
+  border: none;
+  background-color: white;
+  font-size: 1rem;
 }
-
 
 .fileUploadWrapper {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-left: 1rem;
-}
-
-.fileUploadLabel {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    min-height: 3.5rem;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .fileNamesWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .fileNameTag {
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .fileUploadLabel {
     background-color: var(--siteColor);
     color: white;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid transparent;
-}
-
-
-.fileUploadLabel:hover {
-    background-color: var(--hover-color);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
-    border: 1px solid var(--hover-color);
-}
-
-
-.fileUploadInput {
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+  
+  .fileUploadInput {
     display: none;
-}
+  }
+  
 
 .RemoveQuestionButton {
     margin-left: auto;
@@ -106,3 +122,48 @@ select[name='feedbackType']{
     background: transparent;
   }
   
+
+  .filePreviewList {
+    min-height: 2rem; 
+    list-style: none;
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: #444;
+  }
+  
+  .filePreviewItem {
+    background-color: #f0f0f0;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+  }
+  .artefactSlot {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    min-height: 3rem;
+    flex-wrap: wrap;
+  }
+  
+  .fileNamesWrapper {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  .fileNameTag {
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
