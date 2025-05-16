@@ -1,16 +1,14 @@
-const Researcher = require('../models/researcher.js')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const Researcher = require('../models/researcher');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'yourSecretKey';
+
 const { getById, getModel, deleteModel } = require('../utils/helpers/controllerHelpers'); 
-
-//sjekk om funker
 const getResearchers = (req, res) => getModel(Researcher, res, req, 'Researcher'); 
-
-//get a researcher
 const getResearcherById = (req, res) => getById(Researcher, res, req, 'Researcher'); 
+const deleteResearcher = (req, res) => deleteModel(Researcher, req, res, 'Researcher');
 
-//sletter denne studies og? 
-const deleteResearcher = (req, res) => deleteModel(Researcher, req, res, 'Researcher')
-
-//updating
 const updateResearcher = async(req, res) => {
   try {
     const {    
@@ -35,30 +33,50 @@ const updateResearcher = async(req, res) => {
   }
 };
 
-//create
-const createAResearcher = async (req, res) => {
-   try{const {name, email, passwordHash, role } = req.body; 
-    const newResearcher = new Researcher ({
-        name,
-        email,
-        passwordHash,
-        role
-    }); 
-    const savedResearcher = await newResearcher.save(); 
+// Register a new researcher (authenticated user).
+const registerResearcher = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
 
-    res.status(201).json({savedResearcher}); 
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Name, email, and password are required' });
+    }
 
-   } catch (error){
-    res.status(500).json({mesage: `Error creating researcher: ${error.message}`}); 
-   }
-}
+    const existing = await Researcher.findOne({ email });
+    if (existing) {
+      return res.status(400).json({ message: 'Email already in use' });
+    }
 
+    const passwordHash = await bcrypt.hash(password, 10);
+    const newResearcher = new Researcher({ name, email, passwordHash });
 
+    await newResearcher.save();
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: newResearcher._id, email: newResearcher.email },
+      JWT_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res.status(201).json({ message: 'Registration successful' });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ message: 'Server error during registration' });
+  }
+};
 
 module.exports = {
-    createAResearcher,
-    getResearcherById,
-    getResearchers,
-    deleteResearcher,
-    updateResearcher
-}
+  registerResearcher,
+  getResearcherById,
+  getResearchers,
+  deleteResearcher,
+  updateResearcher
+};
