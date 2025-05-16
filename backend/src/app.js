@@ -29,16 +29,16 @@ app.get("/", (req, res) => {
 // Routes
 const routes = ['artefactRoutes', 'studyRoutes', 'invitationRoutes', 'participantRoutes'];
 routes.forEach(route => {
-    app.use('/api', require(`./routes/${route}`));
+  app.use('/api', require(`./routes/${route}`));
 });
 app.use('/api/responses', require('./routes/responseRoutes'));
 
-// Serve static files from the "uploads" directory
-app.use("/uploads", express.static("uploads")); // Serve static files
-
 // Connect upload route
-const uploadRoutes = require("./routes/uploadRoutes");
-app.use("/api/upload", uploadRoutes); // Connect the route
+app.use('/api/upload', require('./routes/uploadRoutes'));
+
+// Register/login
+const authRoutes = require('./routes/authRoutes');
+app.use('/api', authRoutes);
 
 app.get('/api/me', require('./middleware/authMiddleware'), (req, res) => {
   res.json({ user: req.user });

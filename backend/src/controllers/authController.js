@@ -4,7 +4,7 @@ const User = require('../models/researcher'); // Adjust as needed.
 const JWT_SECRET = process.env.JWT_SECRET || 'yourSecretKey';
 
 // Register a new researcher (authenticated user).
-exports.registerUser = async (req, res) => {
+exports.registerResearcher = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
