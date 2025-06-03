@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/researcher'); // Adjust as needed.
+const Researcher = require('../models/researcher'); // Getting the Researcher-model.
 const JWT_SECRET = process.env.JWT_SECRET || 'yourSecretKey';
 
 // Register a new researcher (authenticated user).
@@ -23,11 +23,12 @@ exports.registerResearcher = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict',
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours (1 day)
     });
 
     res.status(201).json({ message: 'Registration successful.' });
   } catch (err) {
+    console.error(err); // Client-side logging.
     res.status(500).json({ message: 'Registration failed', error: err.message });
   }
 };
@@ -35,27 +36,37 @@ exports.registerResearcher = async (req, res) => {
 // Login and send JWT in cookie
 exports.loginUser = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await User.findOne({ username });
-    if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+    const user = await Researcher.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(401).json({ message: 'Invalid credentials' });
+    // Saving the passwordHash in the database is a security risk, so we use bcrypt to compare the password.
+    const match = await bcrypt.compare(password, user.passwordHash);
+    if (!match) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
 
-    const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, {
-      expiresIn: '1d',
-    });
+    // Generating JWT token, which is used for authentication.
+    // The token contains the user's ID and email, and is signed with a secret key.
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      JWT_SECRET,
+      { expiresIn: '1d' }
+    );
 
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict',
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours (1 day)
     });
 
-    res.json({ message: 'Login successful' });
+    res.json({ message: 'Login successful.' });
   } catch (err) {
+    console.error(err); // Client-side logging.
     res.status(500).json({ message: 'Login failed', error: err.message });
   }
 };

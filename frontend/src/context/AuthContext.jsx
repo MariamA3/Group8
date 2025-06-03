@@ -1,36 +1,25 @@
 import { createContext, useState, useEffect } from 'react';
 
-// Predefined example users
-// const exampleUsers = [
-//   {
-//     email: "researcher@ntnu.no",
-//     password: "password123",
-//     name: "Test Researcher",
-//     role: "researcher"
-//   },
-//   {
-//     email: "admin@example.com",
-//     password: "admin123",
-//     name: "Admin User",
-//     role: "admin"
-//   }
-// ];
-
+// AuthContext will hold the authentication state and functions.
 export const AuthContext = createContext();
 
-// Create a provider component.
+// Provider to wrap the app and share auth state globally
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Indicates if user is logged in
+  const [loading, setLoading] = useState(true);        // Prevents rendering before auth check completes
 
-  // Called on login.
+  /**
+   * Logs in the user with email and password.
+   * If successful, sets isLoggedIn = true.
+   * Sends credentials via HTTP-only cookie.
+   */
   const login = async (email, password) => {
     try {
       const res = await fetch('/api/login', {
         method: 'POST',
-        credentials: 'include',
+        credentials: 'include', // Send and accept cookies.
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: email, password }),
+        body: JSON.stringify({ email, password }), // The login requires email and password.
       });
 
       if (res.ok) {
@@ -41,11 +30,14 @@ export const AuthProvider = ({ children }) => {
         return { success: false, error: error.message || 'Login failed' };
       }
     } catch (err) {
-      return { success: false, error: err.message };
+      return { success: false, error: err.message || 'Request error' };
     }
   };
 
-  // Called on logout.
+  /**
+   * Logs out the current user by clearing the cookie on the server.
+   * Always resets frontend auth-state regardless of backend result.
+   */
   const logout = async () => {
     try {
       await fetch('/api/logout', {
@@ -57,9 +49,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /**
+   * On initial load, check if a valid session exists.
+   * If yes, mark the user as logged in.
+   */
   const checkAuth = async () => {
     try {
-      const res = await fetch('/api/me', { credentials: 'include' });
+      const res = await fetch('/api/me', {
+        credentials: 'include',
+      });
       setIsLoggedIn(res.ok);
     } catch {
       setIsLoggedIn(false);
@@ -68,6 +66,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Run check once on app startup.
   useEffect(() => {
     checkAuth();
   }, []);
