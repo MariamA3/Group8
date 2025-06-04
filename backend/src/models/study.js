@@ -20,7 +20,7 @@ const studySchema = new mongoose.Schema({
   status: String,
   startDate: String,
   endDate: String,
-  questions: [questionSchema], 
+  questions: [questionSchema],
   createdAt: { type: Date, default: Date.now },
 });
 

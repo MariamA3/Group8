@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 // Import of page components
 import HomePage from '../pages/homepage';
 import AboutPage from '../pages/AboutPage';
+import AvailableStudiesPage from '../pages/AvailableStudiesPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import Dashboard from '../components/Dashboard/Dashboard';
@@ -13,6 +14,7 @@ import ResultsPage from '../pages/ResultsPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import EditStudyForm from '../components/editStudy/editstudyForm';
 import TakeStudy from '../components/TakeStudy/TakeStudy';
+
 // Protected route component
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useContext(AuthContext);
@@ -50,6 +52,7 @@ const AppRoutes = () => {
       {/* Public routes */}
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
+      <Route path="/quizzes" element={<AvailableStudiesPage />} />
       
       {/* Authentication routes - redirect to dashboard if already logged in */}
       <Route path="/login" element={

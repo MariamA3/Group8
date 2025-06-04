@@ -7,16 +7,21 @@ function StudySummaryCard({ study, selected }) {
   const cardClasses = `summary-card${selected ? ' summary-card--expanded' : ''}`;
 
   const handleClick = () => {
-    navigate(`/results/${study.id}`);
+    navigate(`/results/${study._id}`);
   };
 
   return (
     <div className={cardClasses} onClick={handleClick}>
-      <h2>{study.name}</h2>
+      <h2>{study.title}</h2>
       <div className="details-area">
-        <p>Study ID: <span>{study.id}</span></p>
+        {/* Displaying description if it exists */}
+        {study.description && <p>{study.description}</p>}
+        <p>Study ID: <span>{study._id}</span></p>
         <p>{participantCount} participant{participantCount !== 1 ? 's' : ''}</p>
-        <p>Click to view results for this study.</p>
+        {/* Only display this paragraph when the card is not selected. */}
+        {!selected && (
+          <p>Click to view results for this study.</p>
+        )}
       </div>
     </div>
   );

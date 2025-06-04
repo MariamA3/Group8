@@ -9,32 +9,43 @@ const ResultsPage = () => {
   const navigate = useNavigate(); // To navigate programmatically
   const [studies, setStudies] = useState([]);
   const [selectedStudy, setSelectedStudy] = useState(null);
+  const [error, setError] = useState(null);
 
-  // Actual fetching of the studies from the API, comment out to use mock data instead.
-  // useEffect(() => {
-  //   // Fetching the studies-route, as the API endpoint.
-  //   const fetchStudies = async () => {
-  //     const response = await fetch('/api/studies'); // Your API endpoint
-  //     const data = await response.json();
-  //     setStudies(data);
-  //   };
-  //   fetchStudies();
-  // }, []);
-
-  // Mock data for demonstration purposes.
+  // Loading studies, first fetching from API, fall back to mock data if error or none found.
   useEffect(() => {
-    fetch('/mockStudies.json')
-      .then(res => res.json())
-      .then(data => {
-        setStudies(data);
+    const loadStudies = async () => {
+      try {
+        const res = await fetch('/api/studies');
+        const data = await res.json();
 
-        // If there's an ID in the URL, pre-select the matching study
-        if (id) {
-          const found = data.find(study => study.id.toString() === id);
-          setSelectedStudy(found || null);
+        const validStudies = data.study?.filter(
+          (s) => s.status === 'active' || s.status === 'draft'
+        ) || [];
+
+        if (validStudies.length === 0) throw new Error('No studies found');
+        setStudies(validStudies);
+
+      } catch (err) {
+        console.warn('Falling back to mock data:', err.message);
+        try {
+          const fallback = await fetch('/mockStudies.json').then(res => res.json());
+          setStudies(fallback);
+        } catch (e) {
+          setError('Unable to load any study data.');
         }
-      });
-  }, [id]);
+      }
+    };
+
+    loadStudies();
+  }, []);
+
+  // For actually looking at a study.
+  useEffect(() => {
+    if (id && studies.length > 0) {
+      const found = studies.find(s => s._id === id);
+      setSelectedStudy(found || null);
+    }
+  }, [id, studies]);
 
   // Go back to overview on ESC or Backspace
   useEffect(() => {
@@ -50,7 +61,7 @@ const ResultsPage = () => {
   }, [selectedStudy, navigate]);
 
   const handleCardClick = (study) => {
-    navigate(`/results/${study.id}`);
+    navigate(`/results/${study._id}`);
     setSelectedStudy(study);
   };
 
@@ -60,32 +71,44 @@ const ResultsPage = () => {
     return (
       <>
         <div className="summary-card summary-card-expanded">
-          <h2>Summary of "{selectedStudy.name}"</h2>
+          <h2>Summary of "{selectedStudy.title}"</h2>
           <table>
             <thead>
               <tr>
                 <th>Participant ID</th>
                 {selectedStudy.questions.map((q, i) => (
-                  <th key={i}>{q}</th>
+                  <th key={i}>{q.questionText}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {selectedStudy.participants.map((p, i) => (
-                <tr key={i}>
-                  <td>{p.id}</td>
-                  {p.answers.map((a, j) => (
-                    <td key={j}>{a}</td>
-                  ))}
+              {!selectedStudy.participants || selectedStudy.participants.length === 0 ? (
+                <tr>
+                  <td colSpan={1 + selectedStudy.questions.length}>
+                    No participant data yet.
+                  </td>
                 </tr>
-              ))}
+              ) : (
+                selectedStudy.participants.map((p, i) => (
+                  <tr key={i}>
+                    <td>{p.id}</td>
+                    {p.answers.map((a, j) => (
+                      <td key={j}>{a}</td>
+                    ))}
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
-        <p className="return-text" onClick={() => {
-          setSelectedStudy(null);
-          navigate('/results');
-        }}>
+
+        <p
+          className="return-text"
+          onClick={() => {
+            setSelectedStudy(null);
+            navigate('/results');
+          }}
+        >
           ⬅ Press Escape, Backspace, or click here to return to all studies
         </p>
       </>
@@ -95,6 +118,9 @@ const ResultsPage = () => {
   return (
     <main className="results-container">
       <h1>Results</h1>
+
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+
       <section className="card-container">
         {selectedStudy ? (
           <>
@@ -105,7 +131,7 @@ const ResultsPage = () => {
           <div className="summary-card">
             {studies.map((study) => (
               <StudySummaryCard
-                key={study.id}
+                key={study._id}
                 study={study}
                 selected={false}
                 onClick={handleCardClick}
