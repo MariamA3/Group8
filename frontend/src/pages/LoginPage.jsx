@@ -76,7 +76,7 @@ function LoginPage() {
 
       <div className="content-right">
         <img 
-          src="../../public/manDoor.svg"
+          src="/manDoor.svg"
           alt="People analyzing research data"
           className="research-illustration-login"
         />

@@ -15,7 +15,7 @@ import EditStudyForm from '../components/editStudy/editstudyForm';
 import TakeStudy from '../components/TakeStudy/TakeStudy';
 // Protected route component
 const ProtectedRoute = ({ children }) => {
-  const { isLoggedIn, loading } = useContext(true);
+  const { isLoggedIn, loading } = useContext(AuthContext);
   
   if (loading) {
     return <div>Loading...</div>;
@@ -67,9 +67,9 @@ const AppRoutes = () => {
       {/* Protected routes - must be logged in */}
       <Route path="/dashboard" element={
         //Made public for the presentation
-        <PublicRoute>
+        <ProtectedRoute>
           <Dashboard />
-        </PublicRoute>
+        </ProtectedRoute>
       } />
 
       <Route path="/create-study" element={

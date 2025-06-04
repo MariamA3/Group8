@@ -37,10 +37,10 @@ export default function Dashboard() {
       const res = await fetch(`/api/studies/${studyToDelete._id}`, {
         method: "DELETE",
       });
-      if (!res.ok) throw new Error("Failed to delete study");
+      if (!res.ok) throw new Error("Failed to delete study.");
 
       setStudies((prev) => prev.filter((s) => s._id !== studyToDelete._id));
-      toast.success(`Study "${studyToDelete.title}" deleted successfully`);
+      toast.success(`Study "${studyToDelete.title}" deleted successfully.`);
     } catch (err) {
       toast.error("Delete failed: " + err.message);
     } finally {
