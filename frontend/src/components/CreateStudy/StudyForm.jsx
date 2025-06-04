@@ -40,12 +40,12 @@ export default function StudyForm({
     mode === "edit"
       ? initialQuestions
       : JSON.parse(localStorage.getItem("draft-questions")) || [
-          { questionText: "", feedbackType: "", artefacts: [] },
-          { questionText: "", feedbackType: "", artefacts: [] },
-          { questionText: "", feedbackType: "", artefacts: [] },
-          { questionText: "", feedbackType: "", artefacts: [] },
-          { questionText: "", feedbackType: "", artefacts: [] },
-        ]
+        { questionText: "", feedbackType: "", artefacts: [] },
+        { questionText: "", feedbackType: "", artefacts: [] },
+        { questionText: "", feedbackType: "", artefacts: [] },
+        { questionText: "", feedbackType: "", artefacts: [] },
+        { questionText: "", feedbackType: "", artefacts: [] },
+      ]
   );
 
   const [loading, setLoading] = useState(false);
@@ -53,7 +53,7 @@ export default function StudyForm({
   // LocalStorage syncing (only in create mode)
   useEffect(() => {
     if (mode === "edit") return;
-  
+
     const interval = setInterval(() => {
       localStorage.setItem("draft-title", title);
       localStorage.setItem("draft-description", description);
@@ -62,10 +62,10 @@ export default function StudyForm({
       localStorage.setItem("draft-questions", JSON.stringify(questions));
       toast.success("Draft saved", { duration: 1500, id: "autosave-toast" });
     }, 10000);
-  
+
     return () => clearInterval(interval);
   }, [title, description, startDate, endDate, questions, mode]);
-  
+
 
 
   const validateForm = () => {
@@ -112,19 +112,18 @@ export default function StudyForm({
 
     setLoading(true);
     const studyData = {
-        researcher: researcherId,
-        title,
-        description,
-        startDate,
-        endDate,
-        status,
-        questions: questions.map(q => ({
-            questionText: q.questionText,
-            feedbackType: q.feedbackType,
-            artefacts: q.artefacts
-          }))
-      };
-      
+      researcher: researcherId,
+      title,
+      description,
+      startDate,
+      endDate,
+      status,
+      questions: questions.map(q => ({
+        questionText: q.questionText,
+        feedbackType: q.feedbackType,
+        artefacts: q.artefacts
+      }))
+    };
 
     try {
       const response = await fetch(
@@ -141,13 +140,16 @@ export default function StudyForm({
       const result = await response.json();
       if (!response.ok) {
         const errorMessage =
-          result.message || result.errors?.[0] || "Something went wrong";
+          result.message || result.errors?.[0] || "Something went wrong.";
         toast.error(errorMessage);
         setLoading(false);
         return;
       }
 
-      const studyId = mode === "edit" ? initialStudy._id : result.savedStudy._id;
+      const studyId = mode === "edit" ? initialStudy._id : result._id;
+
+      // Logging process step right before artefact-uploads.
+      toast.success("Study created, uploading artefacts...");
 
       for (const q of questions) {
         for (const artefact of q.artefacts) {
@@ -155,8 +157,7 @@ export default function StudyForm({
 
           const artefactData = {
             study: studyId,
-            researcher: study.researcher,
-            question: match._id,             
+            researcher: researcherId, // Using the static ID.
             title: q.questionText,
             description: "Artefact for question",
             fileUrl: artefact.url,

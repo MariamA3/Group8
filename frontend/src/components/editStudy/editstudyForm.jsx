@@ -55,9 +55,8 @@ export default function EditStudyForm() {
                   artefacts: matchingArtefacts,
                 };
               });
-              
-          
 
+              
 
         setStudy(studyData.study);
         setTitle(studyData.study.title);
@@ -108,7 +107,7 @@ export default function EditStudyForm() {
 const handleSubmit = async (status) => {
   const isValid = validateForm();
   if (!isValid) {
-    console.warn("❌ Validation failed — submission aborted.");
+    console.warn("Validation failed — submission aborted.");
     return;
   }
 
