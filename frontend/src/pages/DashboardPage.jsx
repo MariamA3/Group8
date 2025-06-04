@@ -5,21 +5,42 @@ import dummyStudies from "./DummyStudies";
 import "./styles/DashboardPage.css";
 
 const Dashboard = () => {
-  const [studies, setStudies] = useState([]);
+  const [studies, setStudies] = useState(dummyStudies); // Initializing with dummy data.
+  const [error, setError] = useState(null);
 
-  // Load dummy studies on mount
   useEffect(() => {
-    setStudies(dummyStudies);
+    const fetchStudies = async () => {
+      try {
+        const res = await fetch('/api/studies', {
+          credentials: 'include'
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch real studies');
+        }
+
+        const data = await res.json();
+        setStudies(data);
+      } catch (err) {
+        console.error(err);
+        setError('Could not load actual studies. Showing sample data.');
+        // Keeping the dummy studies as fallback.
+      }
+    };
+
+    fetchStudies();
   }, []);
+
 
   return (
     <div className="DashboardWrapper">
       <div className="DashboardHeader">
         <h1>Dashboard</h1>
-        <Link to="/create-study" className="DashboardButton">
-          Create Study
-        </Link>
+        <Link to="/create-study" className="DashboardButton">Create Study</Link>
       </div>
+
+      {error && <p className="error-message" style={{ color: 'red' }}>{error}</p>}
+
       <div className="DashboardTable">
         <table>
           <thead>
@@ -35,22 +56,24 @@ const Dashboard = () => {
           <tbody>
             {studies.map((study, index) => (
               <tr key={index}>
-                <td>{study.study}</td>
-                <td>{study.created}</td>
-                <td>{study.respondents}</td>
+                <td>{study.name || study.study}</td>
+                <td>{new Date(study.createdAt || study.created).toLocaleDateString()}</td>
+                <td>{study.respondents || (study.participants?.length || 0)}</td>
                 <td>
-                  <a href={study.results} className="view-link">
+                  <Link to={`/results/${study._id || study.id}`} className="view-link">
                     View
-                  </a>
+                  </Link>
                 </td>
                 <td>
                   {study.status === "Active" && (
-                    <a href={study.edit} className="edit-link">
+                    <Link to={`/edit/${study._id || study.id}`} className="edit-link">
                       Edit
-                    </a>
+                    </Link>
                   )}
                 </td>
-                <td className={study.status.toLowerCase()}>{study.status}</td>
+                <td className={(study.status || "unknown").toLowerCase()}>
+                  {study.status || "unknown"}
+                </td>
               </tr>
             ))}
           </tbody>

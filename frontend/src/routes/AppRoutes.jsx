@@ -66,32 +66,27 @@ const AppRoutes = () => {
       
       {/* Protected routes - must be logged in */}
       <Route path="/dashboard" element={
-        //Made public for the presentation
         <ProtectedRoute>
           <Dashboard />
         </ProtectedRoute>
       } />
 
       <Route path="/create-study" element={
-        //made public for the presentation
-        <PublicRoute>
+        <ProtectedRoute>
           <CreateStudy/>
-        </PublicRoute>
+        </ProtectedRoute>
       } />
 
       <Route path="/study/:id" element={
-        //made public for the presentation
-        <PublicRoute>
+        <ProtectedRoute>
           <TakeStudy/>
-        </PublicRoute>
+        </ProtectedRoute>
       } />
-
-
+      
       <Route path="/edit/:id" element={
-        //made public for the presentation
-        <PublicRoute>
+        <ProtectedRoute>
           <EditStudyForm/>
-        </PublicRoute>
+        </ProtectedRoute>
       } />
 
       <Route path="/results" element={

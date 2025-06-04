@@ -17,3 +17,4 @@ const dummyStudies = [
   ];
 
   export default dummyStudies
+  

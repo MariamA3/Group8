@@ -1,7 +1,6 @@
+// Helper-functions for the functions that are repeated a lot 
 
-//make helpers for the functions that are repeated a lot 
-
-//Get model by id 
+// Get model by id 
 const getById = async (Model, req, res, itemName) => {
     try {
         const item = await Model.findById(req.params.id);
@@ -14,9 +13,7 @@ const getById = async (Model, req, res, itemName) => {
     }
 };
 
-
-//Get model 
-
+// Get model 
 const getModel = async (Model, req, res, itemName) => {
     try{    
         const item = await Model.find(); 
@@ -29,8 +26,7 @@ const getModel = async (Model, req, res, itemName) => {
     }
 }
 
-//delete model 
-
+// Delete model 
 const deleteModel = async(Model, req, res, itemName)=>{
     try {
         const item = await Model.findByIdAndDelete(req.params.id);  
@@ -42,9 +38,6 @@ const deleteModel = async(Model, req, res, itemName)=>{
         return res.status(500).json({ message: `Error deleting the ${itemName}; ${error.message}` });
     }
 }
-
-
-
 
 module.exports = { 
     getById,
