@@ -1,37 +1,30 @@
-import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+// LoginPage.jsx — full layout and styling, with correct logic preserved
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import './styles/pages.css';
 
 function LoginPage() {
-  const [email, setEmail] = useState('researcher@ntnu.no');
-  const [password, setPassword] = useState('password123');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError(null);
     setIsLoading(true);
-    
-    try {
-      const result = await login(email, password);
-      
-      if (result.success) {
-        // Redirect to dashboard on successful login
-        navigate('/dashboard');
-      } else {
-        setError(result.error || 'Invalid login credentials');
-      }
-    } catch (err) {
-      setError('An error occurred during login');
-      console.error(err);
-    } finally {
-      setIsLoading(false);
+
+    const result = await login(email, password);
+    if (result.success) {
+      navigate("/dashboard");
+    } else {
+      setError(result.error);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -41,37 +34,43 @@ function LoginPage() {
           <h1 className="welcome-heading">Welcome</h1>
           <p className="signin-subheading">Sign in to your account</p>
         </div>
-        
+
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="email" className="form-label">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              className="form-input" 
+            <input
+              type="email"
+              id="email"
+              className="form-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="researcher@ntnu.no"
               required
             />
           </div>
-          
+
           <div className="form-group">
             <label htmlFor="password" className="form-label">Password</label>
-            <input 
-              type="password" 
-              id="password" 
-              className="form-input" 
+            <input
+              type="password"
+              id="password"
+              className="form-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••••••••••••••"
               required
             />
           </div>
-          
+
+          {error && (
+            <div className="form-error" style={{ color: "red", marginTop: "0.5rem" }}>
+              {error}
+            </div>
+          )}
+
           <div className="form-actions">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="signin-button"
               disabled={isLoading}
             >
@@ -83,14 +82,14 @@ function LoginPage() {
           </div>
         </form>
       </div>
-        
-        <div className="content-right">
-            <img 
-              src="../../public/manDoor.svg" 
-              alt="People analyzing research data" 
-              className="research-illustration-login" 
-            />
-        </div>
+
+      <div className="content-right">
+        <img
+          src="/manDoor.svg"
+          alt="People analyzing research data"
+          className="research-illustration-login"
+        />
+      </div>
     </div>
   );
 }

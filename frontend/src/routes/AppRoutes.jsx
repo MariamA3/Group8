@@ -13,18 +13,19 @@ import ResultsPage from '../pages/ResultsPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import EditStudyForm from '../components/editStudy/editstudyForm';
 import TakeStudy from '../components/TakeStudy/TakeStudy';
+
 // Protected route component
 const ProtectedRoute = ({ children }) => {
-  const { isLoggedIn, loading } = useContext(true);
-  
+  const { isLoggedIn, loading } = useContext(AuthContext);
+
   if (loading) {
     return <div>Loading...</div>;
   }
-  
+
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
   }
-  
+
   return children;
 };
 
@@ -32,15 +33,15 @@ const ProtectedRoute = ({ children }) => {
 const PublicRoute = ({ children }) => {
   const { isLoggedIn, loading } = useContext(AuthContext);
   console.log('PublicRoute:', { isLoggedIn, loading });
-  
+
   if (loading) {
     return <div>Loading...</div>;
   }
-  
+
   if (isLoggedIn) {
     return <Navigate to="/dashboard" replace />;
   }
-  
+
   return children;
 };
 
@@ -50,47 +51,37 @@ const AppRoutes = () => {
       {/* Public routes */}
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
-      
-      {/* Authentication routes - redirect to dashboard if already logged in */}
+
+      {/* Auth routes */}
       <Route path="/login" element={
         <PublicRoute>
           <LoginPage />
         </PublicRoute>
       } />
+
       <Route path="/register" element={
         <PublicRoute>
           <RegisterPage />
         </PublicRoute>
       } />
-      
-      {/* Protected routes - must be logged in */}
+
+      {/* Protected routes */}
       <Route path="/dashboard" element={
-        //Made public for the presentation
-        <PublicRoute>
+        <ProtectedRoute>
           <Dashboard />
-        </PublicRoute>
+        </ProtectedRoute>
       } />
 
       <Route path="/create-study" element={
-        //made public for the presentation
-        <PublicRoute>
-          <CreateStudy/>
-        </PublicRoute>
+        <ProtectedRoute>
+          <CreateStudy />
+        </ProtectedRoute>
       } />
-
-<Route path="/study/:id" element={
-        //made public for the presentation
-        <PublicRoute>
-          <TakeStudy/>
-        </PublicRoute>
-      } />
-
 
       <Route path="/edit/:id" element={
-        //made public for the presentation
-        <PublicRoute>
-          <EditStudyForm/>
-        </PublicRoute>
+        <ProtectedRoute>
+          <EditStudyForm />
+        </ProtectedRoute>
       } />
 
       <Route path="/results" element={
@@ -98,14 +89,17 @@ const AppRoutes = () => {
           <ResultsPage />
         </ProtectedRoute>
       } />
-      
+
       <Route path="/results/:id" element={
         <ProtectedRoute>
           <ResultsPage />
         </ProtectedRoute>
       } />
-      
-      {/* 404 route */}
+
+      {/* Publicly accessible for participants */}
+      <Route path="/study/:id" element={<TakeStudy />} />
+
+      {/* 404 */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

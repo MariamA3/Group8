@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import trashIcon from "/delete.png";
 import { toast } from "react-hot-toast";
 import "./Dashboard.css";
+import {getStudiesByResearcher, deleteStudyById } from '../../services/dashboardService'
 import DeletionConfirmationMessage from "../sharedComponents/DeletionConfirmationMessage";
+import { authFetch } from '../../utils/authfetch.js'; 
 
 export default function Dashboard() {
   const [studies, setStudies] = useState([]);
@@ -12,42 +14,37 @@ export default function Dashboard() {
 
   const navigate = useNavigate();
 
-  const researcherId = "6824a97710175a3a9e9bb9f4";
 
-  useEffect(() => {
-    const fetchStudies = async () => {
-      try {
-        const res = await fetch("/api/studies");
-        const data = await res.json();
-        const allStudies = data.studies || data.study || [];
-        const myStudies = allStudies.filter(
-          (study) => study.researcher === researcherId
-        );
-        setStudies(myStudies);
-      } catch (err) {
-        console.error("Error fetching studies:", err);
-      }
-    };
-
-    fetchStudies();
-  }, []);
-
-  const confirmDelete = async () => {
+useEffect(() => {
+  const fetchStudies = async () => {
     try {
-      const res = await fetch(`/api/studies/${studyToDelete._id}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Failed to delete study");
-
-      setStudies((prev) => prev.filter((s) => s._id !== studyToDelete._id));
-      toast.success(`Study "${studyToDelete.title}" deleted successfully`);
+      const res = await authFetch("/api/studies");
+      const data = await res.json();
+      setStudies(data.study); 
     } catch (err) {
-      toast.error("Delete failed: " + err.message);
-    } finally {
-      setShowConfirm(false);
-      setStudyToDelete(null);
+      console.error("Failed to load studies:", err);
+      setStudies([]); 
     }
   };
+
+  fetchStudies();
+}, []);
+
+
+
+
+const confirmDelete = async () => {
+  try {
+    await deleteStudyById(studyToDelete._id);
+    setStudies((prev) => prev.filter((s) => s._id !== studyToDelete._id));
+    toast.success(`Study "${studyToDelete.title}" deleted successfully`);
+  } catch (err) {
+    toast.error("Delete failed: " + err.message);
+  } finally {
+    setShowConfirm(false);
+    setStudyToDelete(null);
+  }
+};
 
   const getStatusClass = (status) => {
     switch (status) {
