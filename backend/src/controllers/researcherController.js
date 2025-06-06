@@ -1,17 +1,17 @@
-const Researcher = require('../models/researcher.js')
-const { getById, getModel, deleteModel } = require('../utils/helpers/controllerHelpers'); 
+import Researcher  from '../models/researcher.js';
+import { getById, getModel, deleteModel } from '../utils/helpers/controllerHelpers.js'; 
 
 //sjekk om funker
-const getResearchers = (req, res) => getModel(Researcher, res, req, 'Researcher'); 
+export const getResearchers = (req, res) => getModel(Researcher, res, req, 'Researcher'); 
 
 //get a researcher
-const getResearcherById = (req, res) => getById(Researcher, res, req, 'Researcher'); 
+export const getResearcherById = (req, res) => getById(Researcher, res, req, 'Researcher'); 
 
 //sletter denne studies og? 
-const deleteResearcher = (req, res) => deleteModel(Researcher, req, res, 'Researcher')
+export const deleteResearcher = (req, res) => deleteModel(Researcher, req, res, 'Researcher')
 
 //updating
-const updateResearcher = async(req, res) => {
+export const updateResearcher = async(req, res) => {
   try {
     const {    
         name,
@@ -20,7 +20,7 @@ const updateResearcher = async(req, res) => {
         role
      } = req.body; 
 
-    const updatedResearcher = await Researcher.findByIdAndUpdate(
+    const updatedResearcher = await findByIdAndUpdate(
       req.params.id,
       { name, email,  passwordHash, role }, 
       { new: true, runValidators: true }
@@ -36,7 +36,7 @@ const updateResearcher = async(req, res) => {
 };
 
 //create
-const createAResearcher = async (req, res) => {
+export const createAResearcher = async (req, res) => {
    try{const {name, email, passwordHash, role } = req.body; 
     const newResearcher = new Researcher ({
         name,
@@ -54,11 +54,3 @@ const createAResearcher = async (req, res) => {
 }
 
 
-
-module.exports = {
-    createAResearcher,
-    getResearcherById,
-    getResearchers,
-    deleteResearcher,
-    updateResearcher
-}

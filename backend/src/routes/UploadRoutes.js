@@ -1,16 +1,14 @@
-// backend/src/routes/uploadRoutes.js
-const express = require("express");
-const multer = require("multer");
-const path = require("path");
-
+import express from 'express';
 const router = express.Router();
+import multer from "multer";
+import { auth } from "../middleware/authMiddleware.js";
 
 // storage destination + filename logic
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (_req, _file, cb) => {
     cb(null, "uploads/");
   },
-  filename: (req, file, cb) => {
+  filename: (_req, file, cb) => {
     const uniqueName = Date.now() + "-" + file.originalname;
     cb(null, uniqueName);
   },
@@ -18,9 +16,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post("/", upload.single("file"), (req, res) => {
+router.post("/", auth, upload.single("file"), (req, res) => {
   const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
   res.status(200).json({ fileUrl });
 });
 
-module.exports = router;
+export default router;

@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+
 
 //unsure if we need this, but adding so we can use if needed. 
 
@@ -10,6 +11,6 @@ const InvitationSchema = new mongoose.Schema({
   });
 
 
-const Invitation =   mongoose.model("Invitation", InvitationSchema);
-module.exports = Invitation
+export default mongoose.model("Invitation", InvitationSchema);
+
   

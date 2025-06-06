@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+
 
 const ResponseSchema = new mongoose.Schema({
   study: { type: mongoose.Schema.Types.ObjectId, ref: 'Study', required: true },
@@ -9,4 +10,4 @@ const ResponseSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("Response", ResponseSchema);
+export default mongoose.model("Response", ResponseSchema);

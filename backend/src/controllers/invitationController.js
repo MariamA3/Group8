@@ -1,17 +1,16 @@
-const Invitation = require('../models/invitation'); 
-const { getById, getModel, deleteModel } = require('../utils/helpers/controllerHelpers'); 
-
+import Invitation from '../models/invitation.js';
+import { getById, getModel, deleteModel } from '../utils/helpers/controllerHelpers.js';
 
 //sjekk om funker
-const getInvitations = (req, res) => getModel(Invitation, res, req, 'Invitation'); 
+export const getInvitations = (req, res) => getModel(Invitation, res, req, 'Invitation'); 
 
 //get a Invitation
-const getInvitationById = (req, res) => getById(Invitation, res, req, 'Invitation'); 
+export const getInvitationById = (req, res) => getById(Invitation, res, req, 'Invitation'); 
 
 //sletter denne studies og? 
-const deleteInvitation = (req, res) => deleteModel(Invitation, req, res, 'Invitation')
+export const deleteInvitation = (req, res) => deleteModel(Invitation, req, res, 'Invitation')
  
-const createInvitation = async(req, res) => {
+export const createInvitation = async(req, res) => {
     try{
         const {study,status, sentAt } = req.body
         const newInvitation = {
@@ -34,11 +33,11 @@ const createInvitation = async(req, res) => {
 
 //update 
 
-const updateInvitation = async(req, res) => {
+export const updateInvitation = async(req, res) => {
 
     try {
         const {study,  status,  sentAt } = req.body; 
-        const updatedInvitation = Invitation.findByIdAndUpdate(
+        const updatedInvitation = findByIdAndUpdate(
             req.params.id, 
             {study, status, sentAt},
             {new: true, runValidators: true }); 
@@ -52,11 +51,3 @@ const updateInvitation = async(req, res) => {
     }
 
 }
-module.exports = {
-    getInvitations,
-    getInvitationById,
-    deleteInvitation,
-    createInvitation,
-    updateInvitation
-
-}; 

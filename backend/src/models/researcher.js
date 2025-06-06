@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
+
 
 const ResearcherSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -9,5 +10,4 @@ const ResearcherSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-const Researcher = mongoose.model("Researcher", ResearcherSchema);
-module.exports = Researcher;
+export default mongoose.model("Researcher", ResearcherSchema);

@@ -1,20 +1,20 @@
-const Study = require('../models/study'); 
-const { getById, getModel, deleteModel } = require('../utils/helpers/controllerHelpers'); 
+import Study from '../models/study.js';
+import { getById, getModel, deleteModel } from '../utils/helpers/controllerHelpers.js'; 
 
 //get studies
 
-const getStudies = (req, res) => getModel(Study, req, res, 'Study');
+export const getStudies = (req, res) => getModel(Study, req, res, 'Study');
 
 //get study by id 
 
-const getStudyById = (req, res) => getById(Study, req, res, 'Study');
+export const getStudyById = (req, res) => getById(Study, req, res, 'Study');
 
 //delete study 
 
-const deleteStudy = (req, res) => deleteModel(Study, req, res, 'Study');
+export const deleteStudy = (req, res) => deleteModel(Study, req, res, 'Study');
 
 //create study 
-const createStudy = async (req, res) => {
+export const createStudy = async (req, res) => {
   try {
     const { researcher, title, description, status, startDate, endDate, questions } = req.body;
 
@@ -45,11 +45,11 @@ const createStudy = async (req, res) => {
 
 
 //updating
-const updateStudy = async (req, res) => {
+export const updateStudy = async (req, res) => {
   try {
     const { researcher, title, description, status, startDate, endDate, questions } = req.body;
 
-    const updatedStudy = await Study.findByIdAndUpdate(
+    const updatedStudy = await findByIdAndUpdate(
       req.params.id,
       { researcher, title, description, status, startDate, endDate, questions },
       { new: true, runValidators: true }
@@ -66,13 +66,4 @@ const updateStudy = async (req, res) => {
 };
 
 
-  
-module.exports = { 
-    getStudies,
-    getStudyById,
-    createStudy,
-    deleteStudy,
-    updateStudy, 
-
- };
   

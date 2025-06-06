@@ -1,17 +1,16 @@
+import Artefact from '../models/artefact.js'; 
+import { getById, getModel, deleteModel } from '../utils/helpers/controllerHelpers.js'; 
 
-const Artefact = require('../models/artefact'); 
-const { getById, getModel, deleteModel } = require('../utils/helpers/controllerHelpers'); 
 
+export const getArtefactById = (req, res) => getById(Artefact, req, res, 'Artefact');
 
-const getArtefactById = (req, res) => getById(Artefact, req, res, 'Artefact');
+export const getArtefacts = (req, res) => getModel(Artefact, req, res, 'Artefact');
 
-const getArtefacts = (req, res) => getModel(Artefact, req, res, 'Artefact');
-
-const deleteArtefact = (req, res) => deleteModel(Artefact, req, res, 'Artefact')
+export const deleteArtefact = (req, res) => deleteModel(Artefact, req, res, 'Artefact')
 
 
 //create artefact 
-const createArtefact = async(req, res) => {
+export const createArtefact = async(req, res) => {
     try {
         const { study, researcher, title, description, fileUrl, createdAt } = req.body; 
         const newArtefact = new Artefact({
@@ -35,11 +34,11 @@ const createArtefact = async(req, res) => {
 }
 
 //siste jeg hodlte på 
-const updateArtefact = async(req, res)=>{
+export const updateArtefact = async(req, res)=>{
     try{
         const { study, researcher, title, description, fileUrl, createdAt } = req.body; 
 
-        const updatedArtefact = await Artefact.findByIdAndUpdate(
+        const updatedArtefact = await findByIdAndUpdate(
             req.params.id, 
            { study, researcher, title, description, fileUrl, createdAt }, 
            {new: true, runValidators:true}
@@ -56,11 +55,3 @@ const updateArtefact = async(req, res)=>{
 
 
 
-module.exports = {
-    getArtefacts,
-    getArtefactById,
-    createArtefact,
-    updateArtefact,
-    deleteArtefact
-
-} 

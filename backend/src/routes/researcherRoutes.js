@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const Researcher = require('../controllers/researcherController')
+import { getResearchers, getResearcherById, createAResearcher, updateResearcher, deleteResearcher } from '../controllers/researcherController';
 
-router.get('/Researcher', Researcher.getResearchers);
-router.get('/Researcher/:id', Researcher.getResearcherById);
-router.post('/Researcher', Researcher.createAResearcher)
-router.put('/Researcher/:id', Researcher.updateResearcher);
-router.delete('/Researcher/:id', Researcher.deleteResearcher)
+router.get('/Researcher', getResearchers);
+router.get('/Researcher/:id', getResearcherById);
+router.post('/Researcher', createAResearcher)
+router.put('/Researcher/:id', updateResearcher);
+router.delete('/Researcher/:id', deleteResearcher)
 
-module.exports = router;
+export default router;

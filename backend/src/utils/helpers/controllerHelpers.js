@@ -2,7 +2,7 @@
 //make helpers for the functions that are repeated a lot 
 
 //Get model by id 
-const getById = async (Model, req, res, itemName) => {
+export const getById = async (Model, req, res, itemName) => {
     try {
         const item = await Model.findById(req.params.id);
         if (!item) {
@@ -17,7 +17,7 @@ const getById = async (Model, req, res, itemName) => {
 
 //Get model 
 
-const getModel = async (Model, req, res, itemName) => {
+export const getModel = async (Model, req, res, itemName) => {
     try{    
         const item = await Model.find(); 
         if(!item){
@@ -31,7 +31,7 @@ const getModel = async (Model, req, res, itemName) => {
 
 //delete model 
 
-const deleteModel = async(Model, req, res, itemName)=>{
+export const deleteModel = async(Model, req, res, itemName)=>{
     try {
         const item = await Model.findByIdAndDelete(req.params.id);  
         if (!item) {
@@ -43,11 +43,3 @@ const deleteModel = async(Model, req, res, itemName)=>{
     }
 }
 
-
-
-
-module.exports = { 
-    getById,
-    getModel,
-    deleteModel
-};

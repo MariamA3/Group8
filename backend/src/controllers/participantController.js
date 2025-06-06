@@ -1,20 +1,21 @@
-const Participant = require('../models/participant.js')
-const { getById, getModel, deleteModel } = require('../utils/helpers/controllerHelpers'); 
+import Participant  from '../models/participant.js';
+import { getById, getModel, deleteModel } from '../utils/helpers/controllerHelpers.js'; 
 
 //sjekk om funker
-const getParticipants = (req, res) => getModel(Participant, res, req, 'Participant'); 
+export const getParticipants = (req, res) => getModel(Participant, res, req, 'Participant'); 
 
 //get a Participant
-const getParticipantById = (req, res) => getById(Participant, res, req, 'Participant'); 
+export const getParticipantById = (req, res) => getById(Participant, res, req, 'Participant'); 
 
 
-const deleteParticipant = (req, res) => deleteModel(Participant, req, res, 'Participant')
+export const deleteParticipant = (req, res) => deleteModel(Participant, req, res, 'Participant')
 
 //
 //create
-const createAParticipant = async (req, res) => {
+export const createAParticipant = async (req, res) => {
   try {
-    const newParticipant = new Participant(); 
+    // Use req.body to initialize the participant with data from the request
+    const newParticipant = new Participant(req.body); 
     const savedParticipant = await newParticipant.save();
 
     res.status(201).json(savedParticipant); 
@@ -25,13 +26,13 @@ const createAParticipant = async (req, res) => {
 
 
 //not needed only for fixing and debugging backend !!Remove!!!
-const updateParticipant = async(req, res) => {
+export const updateParticipant = async(req, res) => {
   try {
     const {    
         _id
      } = req.body; 
 
-    const updatedParticipant = await Participant.findByIdAndUpdate(
+    const updatedParticipant = await findByIdAndUpdate(
       req.params.id,
       { _id}, 
       { new: true, runValidators: true }
@@ -46,11 +47,3 @@ const updateParticipant = async(req, res) => {
   }
 };
 
-
-module.exports = {
-    createAParticipant,
-    getParticipantById,
-    getParticipants,
-    deleteParticipant,
-    updateParticipant
-}

@@ -1,17 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
+import { questionSchema } from './question.js';
 
-const questionSchema = new mongoose.Schema({
-  questionText: String,
-  feedbackType: String,
-  artefacts: [
-    {
-      url: String,
-      file: {
-        name: String,
-      },
-    },
-  ],
-});
 
 const studySchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -24,4 +13,4 @@ const studySchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("Study", studySchema);
+export default mongoose.model("Study", studySchema);

@@ -1,7 +1,8 @@
-const Response = require('../models/response');
-const Participant = require('../models/participant');
+import Response from '../models/response.js';
+import Participant from '../models/participant.js';
 
-const submitResponses = async (req, res) => {
+
+export const submitResponses = async (req, res) => {
   try {
     const { studyId, answers } = req.body;
 
@@ -27,4 +28,3 @@ const submitResponses = async (req, res) => {
   }
 };
 
-module.exports = { submitResponses };

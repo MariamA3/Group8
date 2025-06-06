@@ -1,13 +1,19 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const studyController = require('../controllers/studyController'); 
+import { auth } from "../middleware/authMiddleware.js";
+import {
+  getStudies,
+  getStudyById,
+  updateStudy,
+  createStudy,
+  deleteStudy
+} from '../controllers/studyController.js';
 
-router.get("/studies", studyController.getStudies);
-router.get("/studies/:id", studyController.getStudyById);
-router.put('/studies/:id', studyController.updateStudy);
-router.post('/studies', studyController.createStudy); 
-router.delete('/studies/:id', studyController.deleteStudy);
+router.get("/studies", getStudies);
+router.get("/studies/:id", getStudyById);
+router.put('/studies/:id', auth, updateStudy);
+router.post('/studies', auth, createStudy);
+router.delete('/studies/:id', auth, deleteStudy);
 
 
-
-module.exports = router;
+export default router;

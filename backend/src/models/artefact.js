@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 const ArtefactSchema = new mongoose.Schema({
     study: { type: mongoose.Schema.Types.ObjectId, ref: "Study", required: true },
@@ -20,5 +20,4 @@ const ArtefactSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
 });
 
-const Artefact =  mongoose.model("Artefact", ArtefactSchema);
-module.exports = Artefact;
+export default mongoose.model("Artefact", ArtefactSchema);

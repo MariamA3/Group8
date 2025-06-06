@@ -1,14 +1,15 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const invitationController = require('../controllers/invitationController'); 
+import { getInvitations, getInvitationById, createInvitation, deleteInvitation } from '../controllers/invitationController.js'; 
+import { auth } from "../middleware/authMiddleware.js";
 
 
 //sjekke disse
-router.get("/invitation", invitationController.getInvitations);
-router.get("/invitation/:id", invitationController.getInvitationById);
-router.post('/invitation', invitationController.createInvitation); 
-router.delete('/invitation/:id', invitationController.deleteInvitation);
+router.get("/invitation", auth, getInvitations);
+router.get("/invitation/:id", auth, getInvitationById);
+router.post('/invitation', auth, createInvitation); 
+router.delete('/invitation/:id', auth, deleteInvitation);
 
 
 
-module.exports = router;
+export default router;

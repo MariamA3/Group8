@@ -1,51 +1,41 @@
-const express = require("express");
-const cors = require("cors");
-const dotenv = require('dotenv');
-const dbConnection = require('./dbConnection');
-const path = require("path");
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import dbConnection from "./dbConnection.js";
+import path from "path";
+import studyRoutes from "./routes/studyRoutes.js";
+import artefactRoutes from "./routes/artefactRoutes.js";
+import invitationRoutes from "./routes/invitationRoutes.js";
+import participantRoutes from "./routes/participantRoutes.js";
+import responseRoutes from "./routes/responseRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Middleware
 app.use(express.json());
 app.use(cors());
-
-// Load environment variables from .env file
 dotenv.config();
-
-// db connection
 dbConnection();
 
-// for debugging
-app.get("/", (req, res) => {
-    res.send("Server is running!");
-});
+app.get("/", (_, res) => res.send("Server is running!"));
 
-// Add routes
-const routes = ['artefactRoutes', 'studyRoutes', 'invitationRoutes', 'participantRoutes'];
-routes.forEach(route => {
-    app.use('/api', require(`./routes/${route}`));
-});
-app.use('/api/responses', require('./routes/responseRoutes'));
+// Apply routes
+app.use("/api/auth", authRoutes);
+app.use("/api", studyRoutes);
+app.use("/api", artefactRoutes);
+app.use("/api", invitationRoutes);
+app.use("/api", participantRoutes);
+app.use("/api/responses", responseRoutes);
+app.use("/api/upload", uploadRoutes);
 
-// Serve static files from the "uploads" directory
-app.use("/uploads", express.static("uploads")); // Serve static files
+// Serve frontend
+app.use("/uploads", express.static("uploads"));
+app.use(express.static(path.join(process.cwd(), "frontend/dist")));
 
-// Connect upload route
-const uploadRoutes = require("./routes/uploadRoutes");
-app.use("/api/upload", uploadRoutes); // Connect the route
 
-// Serving the frontend build files
-app.use(express.static(path.join(__dirname, 'frontend/dist')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'));
-});
-
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
-
-module.exports = app;
+app.listen(PORT, () =>
+  console.log(`Server running on http://localhost:${PORT}`)
+);

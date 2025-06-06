@@ -1,12 +1,14 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const Artefact = require('../controllers/artefactController')
+import { auth } from "../middleware/authMiddleware.js";
+import { getArtefacts, getArtefactById, createArtefact, updateArtefact, deleteArtefact } from '../controllers/artefactController.js';
 
 //kanskje endre til /studies/:id/artefacts? , blir 3 levels som kanskje ikke er så bra 
-router.get('/artefacts', Artefact.getArtefacts);
-router.get('/artefacts/:id', Artefact.getArtefactById);
-router.post('/artefacts', Artefact.createArtefact)
-router.put('/artefacts/:id', Artefact.updateArtefact);
-router.delete('/artefacts/:id', Artefact.deleteArtefact)
+router.get('/artefacts', auth, getArtefacts);
+router.get('/artefacts/:id', auth, getArtefactById);
+router.post('/artefacts', auth, createArtefact)
+router.put('/artefacts/:id', auth, updateArtefact);
+router.delete('/artefacts/:id', auth, deleteArtefact)
 
-module.exports = router;
+
+export default router;

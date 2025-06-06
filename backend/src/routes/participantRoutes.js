@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const Participant = require('../controllers/participantController')
+import { getParticipants, getParticipantById, createAParticipant, updateParticipant, deleteParticipant } from '../controllers/participantController.js';
 
-router.get('/participants', Participant.getParticipants);
-router.get('/participants/:id', Participant.getParticipantById);
-router.post('/participants', Participant.createAParticipant)
-router.put('/participants/:id', Participant.updateParticipant);
-router.delete('/participants/:id', Participant.deleteParticipant)
+router.get('/participants', getParticipants);
+router.get('/participants/:id', getParticipantById);
+router.post('/participants', createAParticipant)
+router.put('/participants/:id', updateParticipant);
+router.delete('/participants/:id', deleteParticipant)
 
-module.exports = router;
+export default router;
